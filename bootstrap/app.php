@@ -6,6 +6,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 
 use App\Http\Middleware\ForceJsonRequestHeader;
+use App\Exceptions\ApiExceptionHandler;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,11 +22,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
 
-        $exceptions->render(function (AuthenticationException $e, Request $request) {
-
-            return response()->json([
-                'message' => 'Not Authorized'
-            ], 401);
-        });
+        $exceptions->render(fn (Throwable $e, $request) => ApiExceptionHandler::handle($e) );
         
     })->create();
