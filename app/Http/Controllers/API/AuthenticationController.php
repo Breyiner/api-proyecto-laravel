@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,39 +13,24 @@ use Validator;
 
 class AuthenticationController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|min:3',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6'
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors());
-        }
+        $data = $request->validated();
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password'])
         ]);
 
         return response()->json(['message' => 'Usuario registrado con éxito']);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validator = Validator::make($request->all(),[
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        $data = $request->validated();
 
-        if($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($data->only('email', 'password'))) {
             return response()->json(['message' => 'Credenciales incorrectas'], 401);
         }
 
