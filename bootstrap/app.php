@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\ForceJsonRequestHeader;
 use App\Exceptions\ApiExceptionHandler;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,7 +23,10 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'force.json' => ForceJsonRequestHeader::class,
-            'ability' => CheckForAnyAbility::class
+            'ability' => CheckForAnyAbility::class,
+            'permission' => PermissionMiddleware::class,
+            'role' => RoleMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
 
         $middleware->api(prepend: [
