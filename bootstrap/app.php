@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Middleware\ForceJsonRequestHeader;
 use App\Exceptions\ApiExceptionHandler;
+use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,7 +18,14 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
 
-        $middleware->api(prepend: ForceJsonRequestHeader::class);
+        $middleware->alias([
+            'force.json' => ForceJsonRequestHeader::class,
+            'ability' => CheckForAnyAbility::class
+        ]);
+
+        $middleware->api(prepend: [
+            'force.json'
+        ]);
 
     })
     ->withExceptions(function (Exceptions $exceptions): void {
