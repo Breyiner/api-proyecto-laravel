@@ -14,7 +14,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('refresh-token', [AuthenticationController::class, 'refreshToken'])->middleware('ability:'.TokenAbility::ISSUE_ACCESS_TOKEN->value);
 
-    Route::get('user', [AuthenticationController::class, 'userInfo']);
     Route::post('logout', [AuthenticationController::class, 'logOut']);
 
 });

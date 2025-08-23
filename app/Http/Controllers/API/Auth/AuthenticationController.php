@@ -61,11 +61,6 @@ class AuthenticationController extends Controller
         ]);
     }
 
-    public function userInfo(Request $request)
-    {
-        return response()->json($request->user());
-    }
-
     public function logOut(Request $request)
     {
         $user = Auth::user();
