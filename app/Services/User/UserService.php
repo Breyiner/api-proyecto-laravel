@@ -3,6 +3,7 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,6 +26,12 @@ class UserService
         ]);
 
         $user->assignRole('Usuario');
+
+        Profile::create([
+            'user_id' => $user->id,
+            'name' => $data['name'],
+            'last_name' => $data['last_name'],
+        ]);
 
         return $user;
 

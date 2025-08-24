@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users', [UserController::class, 'store'])
         ->middleware('permission:usuarios.store');
 
-    Route::post('/users{id}', [UserController::class, 'destroy'])
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->middleware('permission:usuarios.destroy');
 
 });

@@ -23,6 +23,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:50',
+            'last_name' => 'required|min:3|max:50',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6|max:20'
         ];
@@ -38,13 +39,16 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name.required' => 'El :attribute es obligatorio',
+            'last_name.required' => 'El :attribute es obligatorio',
             'email.required' => 'El :attribute es obligatorio',
             'password.required'=>'La :attribute es obligatoria',
 
             'name.min' => 'El :attribute debe tener al menos :min caracteres',
+            'last_name.min' => 'El :attribute debe tener al menos :min caracteres',
             'password.min' => 'La :attribute debe tener al menos :min caracteres.',
 
             'name.max' => 'El :attribute no debe tener más de :max caracteres',
+            'last_name.max' => 'El :attribute no debe tener más de :max caracteres',
             'password.max' => 'La attribute no debe tener más de :max caracteres',
 
             'email.unique'   => 'Este :attribute ya está registrado en el sistema.',
@@ -61,6 +65,7 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
+            'last_name' => 'apellido',
             'email' => 'correo',
             'password' => 'contraseña'
         ];
