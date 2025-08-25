@@ -29,8 +29,20 @@ class UpdateUserRoleRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'role_id.required' => 'El rol es obligatorio.',
-            'role_id.exists' => 'El rol seleccionado no existe.',
+            'role_id.required' => 'El :attribute es obligatorio.',
+            'role_id.exists' => 'El :attribute seleccionado no existe.',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'role_id' => 'rol',
         ];
     }
 }

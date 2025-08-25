@@ -29,9 +29,21 @@ class UpdateOwnUserEmailRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'El correo es obligatorio.',
-            'email.email' => 'El correo no tiene un formato válido.',
-            'email.unique' => 'Este correo ya está registrado.',
+            'email.required' => 'El :attribute es obligatorio.',
+            'email.email' => 'El :attribute no tiene un formato válido.',
+            'email.unique' => 'Este :attribute ya está registrado.',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'email' => 'correo',
         ];
     }
 }

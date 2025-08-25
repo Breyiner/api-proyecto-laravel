@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserService
 {
@@ -14,7 +15,18 @@ class UserService
 
         $users = User::all();
 
-        return $users;
+      if (count($users) == 0) {
+
+        return [
+          "error" => false,
+          "code" => 200,
+          "message" => "No hay usuarios registrados",
+          "data" => $users
+        ];
+
+      }
+
+      return $users;
     }
 
     public function getUser($id) {
@@ -49,7 +61,7 @@ class UserService
 
         $user = User::findOrFail($id);
 
-        $user->update(Arr::only($data, ['email', 'password', 'status_id']));
+        $user->update(Arr::only($data, ['email', 'password' /**, 'status_id' */]));
 
         return $user;
     }
@@ -67,17 +79,45 @@ class UserService
 
         $user = User::findOrFail($id);
 
+        $user->update($data['email']);
+
+        return $user;
     }
 
     public function updatePassword(array $data, $id) {
+      
+      $user = User::findOrFail($id);
 
-        $user = User::findOrFail($id);
+      if ($data['current_password']) {
 
+        if (Hash::check($data['current_password'], $user->password)) {
+
+        }
+
+        else {
+
+        }
+      }
+
+
+        $user->update($data['password']);
+
+        return $user;
     }
 
     public function updateRole(array $data, $id) {
 
         $user = User::findOrFail($id);
+
+        $role = $user->roles()->first()->name;
+
+        $user->removeRole($role);
+
+        $newRole = Role::findOrFail($data['role_id']);
+
+        $user->assignRole($newRole);
+
+        return $user;
 
     }
 
@@ -85,6 +125,9 @@ class UserService
 
         $user = User::findOrFail($id);
 
+        // $user->update($data['status_id']);
+
+        return $user;
     }
 
     public function deleteUser($id) {

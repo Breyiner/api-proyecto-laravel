@@ -21,7 +21,7 @@ class UpdateUserEmailRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user');
+        $userId = $this->route('user_id');
 
         return [
             'email' => 'required|email|unique:users,email,' . $userId,

@@ -29,9 +29,21 @@ class UpdateUserPasswordRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.max' => 'La contraseña no debe tener más de 20 caracteres.',
+            'password.required' => 'La :attribute es obligatoria.',
+            'password.min' => 'La :attribute debe tener al menos :min caracteres.',
+            'password.max' => 'La :attribute no debe tener más de :max caracteres.',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'password' => 'contraseña',
         ];
     }
 }

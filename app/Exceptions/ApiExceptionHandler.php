@@ -28,7 +28,7 @@ class ApiExceptionHandler
             ], 403);
         }
 
-        if ($e instanceof ModelNotFoundException) {
+        if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
             return response()->json([
                 'status'  => 404,
                 'message' => 'Recurso no encontrado',

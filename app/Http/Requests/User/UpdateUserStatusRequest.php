@@ -29,8 +29,20 @@ class UpdateUserStatusRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // 'status_id.required' => 'El estado es obligatorio.',
-            // 'status_id.exists' => 'El estado seleccionado no existe.',
+            // 'status_id.required' => 'El :attribute es obligatorio.',
+            // 'status_id.exists' => 'El :attribute seleccionado no existe.',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'status_id' => 'estado',
         ];
     }
 }

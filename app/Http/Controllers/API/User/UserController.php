@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\User;
 
+use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PartialUpdateUserRequest;
 use App\Http\Requests\User\StoreUserRequest;
@@ -32,13 +33,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getAllUsers();
+        $response = $this->userService->getAllUsers();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuarios obtenidos con éxito',
-            'data' => $users
-        ]);
+        return ResponseFormatter::success($response);
     }
 
     /**
@@ -49,12 +46,9 @@ class UserController extends Controller
         
         $data = $request->validated();
 
-        $user = $this->userService->createUser($data);
+        $response = $this->userService->createUser($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuario creado con éxito',
-        ]);
+        return ResponseFormatter::success([]);
     }
 
     /**
@@ -62,19 +56,25 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(["message" => "aquí no es"]);
+        $response = $this->userService->getUser($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Usuario obtenido con éxito',
+            'data' => $response
+        ]);
     }
 
     public function showOwn(Request $request) {
 
         $user = Auth::user();
 
-        $userData = $this->userService->getUser($user->id);
+        $response = $this->userService->getUser($user->id);
 
         return response()->json([
             'success' => true,
             'message' => 'Usuario obtenido con éxito',
-            'data' => $userData
+            'data' => $response
         ]);
     }
 
@@ -84,6 +84,11 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, string $id)
     {
         $data = $request->validated();
+
+        $response = $this->userService->updateUser($data, $id);
+
+        return ResponseFormatter::success($response);
+
     }
 
     public function partialUpdate(PartialUpdateUserRequest $request, string $id) {
@@ -93,33 +98,51 @@ class UserController extends Controller
     public function updateEmail(UpdateUserEmailRequest $request, string $id)
     {
         $data = $request->validated();
+
+        $response = $this->userService->updateEmail($data, $id);
+
     }
 
     public function updatePassword(UpdateUserPasswordRequest $request, string $id)
     {
         $data = $request->validated();
+
+        $response = $this->userService->updatePassword($data, $id);
+
     }
 
     public function updateStatus(UpdateUserStatusRequest $request, string $id)
     {
         $data = $request->validated();
+
+        $response = $this->userService->updateStatus($data, $id);
+
     }
 
     public function updateRole(UpdateUserRoleRequest $request, string $id)
     {
         $data = $request->validated();
+
+        $response = $this->userService->updateRole($data, $id);
+
     }
 
     public function updateOwnEmail(UpdateOwnUserEmailRequest $request)
     {
         $user = Auth::user();
         $data = $request->validated();
+
+        $response = $this->userService->updateEmail($data, $user->id);
+
     }
 
     public function updateOwnPassword(UpdateOwnUserPasswordRequest $request)
     {
         $user = Auth::user();
         $data = $request->validated();
+
+        $response = $this->userService->updatePassword($data, $user->id);
+
     }
 
     /**

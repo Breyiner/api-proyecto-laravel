@@ -21,7 +21,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('user');
+        $userId = $this->route('user_id');
 
         return [
             'email' => 'required|email|unique:users,email,'.$userId,
@@ -34,15 +34,30 @@ class UpdateUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'El correo es obligatorio.',
-            'email.email' => 'El correo no tiene un formato válido.',
-            'email.unique' => 'Este correo ya está registrado.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.max' => 'La contraseña no debe tener más de 20 caracteres.',
-            'role_id.required' => 'El rol es obligatorio.',
-            'role_id.exists' => 'El rol seleccionado no existe.',
-            // 'status_id.required' => 'El estado es obligatorio.',
-            // 'status_id.exists' => 'El estado seleccionado no existe.',
+            'email.required' => 'El :attribute es obligatorio.',
+            'email.email' => 'El :attribute no tiene un formato válido.',
+            'email.unique' => 'Este :attribute ya está registrado.',
+            'password.min' => 'La :attribute debe tener al menos :min caracteres.',
+            'password.max' => 'La :attribute no debe tener más de :max caracteres.',
+            'role_id.required' => 'El :attribute es obligatorio.',
+            'role_id.exists' => 'El :attribute seleccionado no existe.',
+            // 'status_id.required' => 'El :attribute es obligatorio.',
+            // 'status_id.exists' => 'El :attribute seleccionado no existe.',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'email' => 'correo',
+            'password' => 'contraseña',
+            'role_id' => 'rol',
+            'status_id' => 'estado',
         ];
     }
 }

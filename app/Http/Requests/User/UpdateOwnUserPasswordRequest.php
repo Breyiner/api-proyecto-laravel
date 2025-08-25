@@ -30,10 +30,24 @@ class UpdateOwnUserPasswordRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'current_password.required' => 'Debes ingresar tu contraseña actual.',
-            'password.required' => 'La nueva contraseña es obligatoria.',
-            'password.min' => 'La nueva contraseña debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
+            'current_password.required' => 'Debes ingresar tu :attribute.',
+            'password.required' => 'La :attribute es obligatoria.',
+            'password.min' => 'La :attribute debe tener al menos :min caracteres.',
+            'password.max' => 'La :attribute no debe tener más de :max caracteres.',
+            'password.confirmed' => 'La confirmación de la :attribute no coincide.',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'password' => 'nueva contraseña',
+            'current_password' => 'contrasenña actual'
         ];
     }
 }
