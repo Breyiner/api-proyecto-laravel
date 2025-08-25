@@ -18,12 +18,42 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Routes User
     Route::get('/users', [UserController::class, 'index'])
-        ->middleware('permission:usuarios.index');
+        ->middleware('permission:users.index');
+
+    Route::get('/users/me', [UserController::class, 'showOwn'])
+        ->middleware('permission:users.show-own');
+
+    Route::get('/users/{user_id}', [UserController::class, 'show'])
+        ->middleware('permission:users.show');
 
     Route::post('/users', [UserController::class, 'store'])
-        ->middleware('permission:usuarios.store');
+        ->middleware('permission:users.store');
+
+    Route::put('/users/{user_id}', [UserController::class, 'update'])
+        ->middleware('permission:users.update');
+
+    Route::patch('/users/{user_id}', [UserController::class, 'partialUpdate'])
+        ->middleware('permission:users.update');
+
+    Route::patch('/users/{user_id}/email', [UserController::class, 'updateEmail'])
+        ->middleware('permission:users.update-email');
+
+    Route::patch('/users/{user_id}/password', [UserController::class, 'updatePassword'])
+        ->middleware('permission:users.update-password');
+
+    Route::patch('/users/{user_id}/status', [UserController::class, 'updateStatus'])
+        ->middleware('permission:users.update-status');
+
+    Route::patch('/users/{user_id}/role', [UserController::class, 'updateRole'])
+        ->middleware('permission:users.update-role');
+
+    Route::patch('/users/me/email', [UserController::class, 'updateOwnEmail'])
+        ->middleware('permission:users.update-own-email');
+
+    Route::patch('/users/me/password', [UserController::class, 'updateOwnPassword'])
+        ->middleware('permission:users.update-own-password');
 
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
-        ->middleware('permission:usuarios.destroy');
+        ->middleware('permission:users.destroy');
 
 });

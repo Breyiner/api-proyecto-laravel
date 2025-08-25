@@ -26,5 +26,17 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'last_name' => 'Admin',
         ]);
+
+        $superAdmin = User::create([
+            'email' => 'superadmin@example.com',
+            'password' => Hash::make('password'),
+        ]);
+        $superAdmin->assignRole('Super Administrador');
+
+        Profile::create([
+            'user_id' => $superAdmin->id,
+            'name' => 'Super Admin',
+            'last_name' => 'Super Admin',
+        ]);
     }
 }

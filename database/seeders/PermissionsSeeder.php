@@ -13,9 +13,18 @@ class PermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'usuarios.index']);
-        Permission::create(['name' => 'usuarios.store']);
-        Permission::create(['name' => 'usuarios.update']);
-        Permission::create(['name' => 'usuarios.destroy']);
+        //Permisos sobre usuarios
+        Permission::create(['name' => 'users.index']);
+        Permission::create(['name' => 'users.show']);
+        Permission::create(['name' => 'users.show-own']);
+        Permission::create(['name' => 'users.store']);
+        Permission::create(['name' => 'users.update']);
+        Permission::create(['name' => 'users.update-email']);
+        Permission::create(['name' => 'users.update-password']);
+        Permission::create(['name' => 'users.update-status']);
+        Permission::create(['name' => 'users.update-role']);
+        Permission::create(['name' => 'users.update-own-email']);
+        Permission::create(['name' => 'users.update-own-password']);
+        Permission::create(['name' => 'users.destroy']);
     }
 }

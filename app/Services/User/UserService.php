@@ -17,6 +17,14 @@ class UserService
         return $users;
     }
 
+    public function getUser($id) {
+
+        $user = User::findOrFail($id);
+
+        return $user;
+
+    }
+
     public function createUser(array $data) {
 
         $user = User::create([
@@ -41,9 +49,42 @@ class UserService
 
         $user = User::findOrFail($id);
 
-        $user->update(Arr::only($data, ['name', 'email']));
+        $user->update(Arr::only($data, ['email', 'password', 'status_id']));
 
         return $user;
+    }
+
+    public function partialUpdatepdateUser(array $data, $id) {
+
+        $user = User::findOrFail($id);
+
+        $user->update(Arr::only($data, []));
+
+        return $user;
+    }
+
+    public function updateEmail(array $data, $id) {
+
+        $user = User::findOrFail($id);
+
+    }
+
+    public function updatePassword(array $data, $id) {
+
+        $user = User::findOrFail($id);
+
+    }
+
+    public function updateRole(array $data, $id) {
+
+        $user = User::findOrFail($id);
+
+    }
+
+    public function updateStatus(array $data, $id) {
+
+        $user = User::findOrFail($id);
+
     }
 
     public function deleteUser($id) {
