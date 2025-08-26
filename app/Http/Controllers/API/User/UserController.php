@@ -35,7 +35,36 @@ class UserController extends Controller
     {
         $response = $this->userService->getAllUsers();
 
-        return ResponseFormatter::success($response);
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
+    
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $response = $this->userService->getUser($id);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
+    public function showOwn(Request $request) {
+
+        $user = Auth::user();
+
+        $response = $this->userService->getUser($user->id);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
     /**
@@ -48,34 +77,10 @@ class UserController extends Controller
 
         $response = $this->userService->createUser($data);
 
-        return ResponseFormatter::success([]);
-    }
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $response = $this->userService->getUser($id);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuario obtenido con éxito',
-            'data' => $response
-        ]);
-    }
-
-    public function showOwn(Request $request) {
-
-        $user = Auth::user();
-
-        $response = $this->userService->getUser($user->id);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuario obtenido con éxito',
-            'data' => $response
-        ]);
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
     /**
@@ -87,35 +92,23 @@ class UserController extends Controller
 
         $response = $this->userService->updateUser($data, $id);
 
-        return ResponseFormatter::success($response);
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
 
     }
 
     public function partialUpdate(PartialUpdateUserRequest $request, string $id) {
 
-    }
-
-    public function updateEmail(UpdateUserEmailRequest $request, string $id)
-    {
         $data = $request->validated();
 
-        $response = $this->userService->updateEmail($data, $id);
+        $response = $this->userService->updateUser($data, $id);
 
-    }
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code'], $response['errors']);
 
-    public function updatePassword(UpdateUserPasswordRequest $request, string $id)
-    {
-        $data = $request->validated();
-
-        $response = $this->userService->updatePassword($data, $id);
-
-    }
-
-    public function updateStatus(UpdateUserStatusRequest $request, string $id)
-    {
-        $data = $request->validated();
-
-        $response = $this->userService->updateStatus($data, $id);
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
 
     }
 
@@ -125,6 +118,10 @@ class UserController extends Controller
 
         $response = $this->userService->updateRole($data, $id);
 
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
     public function updateOwnEmail(UpdateOwnUserEmailRequest $request)
@@ -134,6 +131,10 @@ class UserController extends Controller
 
         $response = $this->userService->updateEmail($data, $user->id);
 
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
     public function updateOwnPassword(UpdateOwnUserPasswordRequest $request)
@@ -143,6 +144,10 @@ class UserController extends Controller
 
         $response = $this->userService->updatePassword($data, $user->id);
 
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
     /**
@@ -150,11 +155,11 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->userService->deleteUser($id);
+        $response = $this->userService->deleteUser($id);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Usuario eliminado con éxito',
-        ]);
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 }

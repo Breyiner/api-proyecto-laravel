@@ -15,25 +15,40 @@ class UserService
 
         $users = User::all();
 
-      if (count($users) == 0) {
+        if (count($users) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay usuarios registrados",
+                "data" => $users
+            ];
+
 
         return [
-          "error" => false,
-          "code" => 200,
-          "message" => "No hay usuarios registrados",
-          "data" => $users
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuarios obtenidos con éxito",
+            "data" => $users
         ];
-
-      }
-
-      return $users;
     }
 
     public function getUser($id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
-        return $user;
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario obtenido con éxito",
+            "data" => $user
+        ];
 
     }
 
@@ -53,77 +68,153 @@ class UserService
             'last_name' => $data['last_name'],
         ]);
 
-        return $user;
+        return [
+            'error' => false,
+            'code' => 201,
+            'message' => 'Usuario creado con éxito',
+        ];
 
     }
 
     public function updateUser(array $data, $id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
 
         $user->update(Arr::only($data, ['email', 'password' /**, 'status_id' */]));
 
-        return $user;
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario actualizado con éxito",
+        ];
+
     }
 
-    public function partialUpdatepdateUser(array $data, $id) {
+    public function partialUpdateUser(array $entryData, $id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
+
+        
+        $data = [];
+
+        foreach ($entryData as $key => $value) {
+            $data[$key] = $value;
+        }
 
         $user->update(Arr::only($data, []));
 
-        return $user;
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario actualizado con éxito",
+        ];
     }
 
     public function updateEmail(array $data, $id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
-        $user->update($data['email']);
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
 
-        return $user;
+        $user->update([
+            "email" => $data['email']
+        ]);
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario actualizado con éxito",
+        ];
+
     }
 
     public function updatePassword(array $data, $id) {
       
-      $user = User::findOrFail($id);
+        $user = User::find($id);
 
-      if ($data['current_password']) {
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
 
-        if (Hash::check($data['current_password'], $user->password)) {
+        if ($data['current_password'])
+            if (!Hash::check($data['current_password'], $user->password)) 
+                return [
+                    "error" => true,
+                    "code" => 401,
+                    "message" => "Contraseña incorrecta"
+                ];
 
-        }
 
-        else {
+        $user->update([
+            "password" => Hash::make($data['password'])
+        ]);
 
-        }
-      }
-
-
-        $user->update($data['password']);
-
-        return $user;
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario actualizado con éxito",
+        ];
     }
 
     public function updateRole(array $data, $id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
+
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
 
         $role = $user->roles()->first()->name;
 
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este rol no existe",
+            ];
+
         $user->removeRole($role);
 
-        $newRole = Role::findOrFail($data['role_id']);
+        $newRole = Role::find($data['role_id']);
 
         $user->assignRole($newRole);
 
-        return $user;
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario actualizado con éxito",
+        ];
 
     }
 
     public function updateStatus(array $data, $id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
 
         // $user->update($data['status_id']);
 
@@ -132,9 +223,21 @@ class UserService
 
     public function deleteUser($id) {
 
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         
+        if (!$user) 
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
+
         $user->delete();
 
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario eliminado con éxito",
+        ];
     }
 }

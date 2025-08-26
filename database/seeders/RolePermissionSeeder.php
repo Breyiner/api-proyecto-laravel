@@ -19,7 +19,7 @@ class RolePermissionSeeder extends Seeder
         $userRole = Role::findByName('Usuario');
 
         $superAdminRole->givePermissionTo(Permission::all()); // Dar todos los permisos al super administrador
-        $adminRole->givePermissionTo(Permission::whereNotIn('name', ['users.update-role', 'users.update'])->get());
+        $adminRole->givePermissionTo(Permission::whereNotIn('name', ['users.update-role'])->get());
         $userRole->givePermissionTo([
             'users.show-own', 'users.update-own-email', 'users.update-own-password'
         ]);

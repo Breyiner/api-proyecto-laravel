@@ -35,15 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/users/{user_id}', [UserController::class, 'partialUpdate'])
         ->middleware('permission:users.update');
 
-    Route::patch('/users/{user_id}/email', [UserController::class, 'updateEmail'])
-        ->middleware('permission:users.update-email');
-
-    Route::patch('/users/{user_id}/password', [UserController::class, 'updatePassword'])
-        ->middleware('permission:users.update-password');
-
-    Route::patch('/users/{user_id}/status', [UserController::class, 'updateStatus'])
-        ->middleware('permission:users.update-status');
-
     Route::patch('/users/{user_id}/role', [UserController::class, 'updateRole'])
         ->middleware('permission:users.update-role');
 

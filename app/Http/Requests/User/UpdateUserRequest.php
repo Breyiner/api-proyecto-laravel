@@ -26,7 +26,6 @@ class UpdateUserRequest extends FormRequest
         return [
             'email' => 'required|email|unique:users,email,'.$userId,
             'password' => 'required|min:8|max:20',
-            'role_id' => 'required|exists:roles,id',
             // 'status_id' => 'required|exists:statuses,id',
         ];
     }
@@ -37,10 +36,9 @@ class UpdateUserRequest extends FormRequest
             'email.required' => 'El :attribute es obligatorio.',
             'email.email' => 'El :attribute no tiene un formato válido.',
             'email.unique' => 'Este :attribute ya está registrado.',
+            'password.required' => 'La :attribute es obligatoria.',
             'password.min' => 'La :attribute debe tener al menos :min caracteres.',
             'password.max' => 'La :attribute no debe tener más de :max caracteres.',
-            'role_id.required' => 'El :attribute es obligatorio.',
-            'role_id.exists' => 'El :attribute seleccionado no existe.',
             // 'status_id.required' => 'El :attribute es obligatorio.',
             // 'status_id.exists' => 'El :attribute seleccionado no existe.',
         ];
@@ -56,7 +54,6 @@ class UpdateUserRequest extends FormRequest
         return [
             'email' => 'correo',
             'password' => 'contraseña',
-            'role_id' => 'rol',
             'status_id' => 'estado',
         ];
     }
