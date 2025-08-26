@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\TokenAbility;
+use App\Http\Controllers\API\Status\StatusController;
 use App\Http\Controllers\API\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthenticationController;
@@ -46,5 +47,25 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/users/{id}', [UserController::class, 'destroy'])
         ->middleware('permission:users.destroy');
+
+    
+    //Routes status
+    Route::get('/statuses', [StatusController::class, 'index'])
+        ->middleware('permission:statuses.index');
+
+    Route::get('/statuses', [StatusController::class, 'show'])
+        ->middleware('permission:statuses.show');
+
+    Route::post('/statuses', [StatusController::class, 'store'])
+        ->middleware('permission:statuses.store');
+
+    Route::put('/statuses', [StatusController::class, 'update'])
+        ->middleware('permission:statuses.update');
+        
+    Route::patch('/statuses', [StatusController::class, 'partialUpdate'])
+        ->middleware('permission:statuses.update');
+
+    Route::delete('/statuses', [StatusController::class, 'destroy'])
+        ->middleware('permission:statuses.destroy');
 
 });

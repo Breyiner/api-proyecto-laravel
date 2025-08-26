@@ -26,7 +26,7 @@ class PartialUpdateUserRequest extends FormRequest
         return [
             'email' => 'sometimes|email|unique:users,email,'.$userId,
             'password' => 'sometimes|min:8|max:20',
-            // 'status_id' => 'sometimes|exists:statuses,id',
+            'status_id' => 'sometimes|exists:statuses,id',
         ];
     }
 
@@ -37,7 +37,7 @@ class PartialUpdateUserRequest extends FormRequest
             'email.unique' => 'Este :attribute ya está registrado.',
             'password.min' => 'La :attribute debe tener al menos :min caracteres.',
             'password.max' => 'La :attribute no debe tener más de :max caracteres.',
-            // 'status_id.exists' => 'El :attribute seleccionado no existe.',
+            'status_id.exists' => 'El :attribute seleccionado no existe.',
         ];
     }
 

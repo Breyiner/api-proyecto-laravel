@@ -55,7 +55,6 @@ class UserService
     public function createUser(array $data) {
 
         $user = User::create([
-            'name'     => $data['name'],
             'email'    => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
@@ -115,7 +114,7 @@ class UserService
             $data[$key] = $value;
         }
 
-        $user->update(Arr::only($data, []));
+        $user->update($data );
 
         return [
             "error" => false,
@@ -210,15 +209,6 @@ class UserService
             "message" => "Usuario actualizado con éxito",
         ];
 
-    }
-
-    public function updateStatus(array $data, $id) {
-
-        $user = User::find($id);
-
-        // $user->update($data['status_id']);
-
-        return $user;
     }
 
     public function deleteUser($id) {

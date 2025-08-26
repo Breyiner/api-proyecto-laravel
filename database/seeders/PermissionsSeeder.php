@@ -23,5 +23,12 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'users.update-own-email']);
         Permission::create(['name' => 'users.update-own-password']);
         Permission::create(['name' => 'users.destroy']);
+
+        // Permisos sobre estados
+        Permission::create(['name' => 'statuses.index']);
+        Permission::create(['name' => 'statuses.show']);
+        Permission::create(['name' => 'statuses.store']);
+        Permission::create(['name' => 'statuses.update']);
+        Permission::create(['name' => 'statuses.destroy']);
     }
 }
