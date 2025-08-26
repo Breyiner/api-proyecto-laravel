@@ -30,5 +30,19 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'statuses.store']);
         Permission::create(['name' => 'statuses.update']);
         Permission::create(['name' => 'statuses.destroy']);
+
+        //Permisos sobre ciudades
+        Permission::create(['name' => 'cities.index']);
+        Permission::create(['name' => 'cities.show']);
+        Permission::create(['name' => 'cities.store']);
+        Permission::create(['name' => 'cities.update']);
+        Permission::create(['name' => 'cities.destroy']);
+
+        //Permisos sobre generos
+        Permission::create(['name' => 'genders.index']);
+        Permission::create(['name' => 'genders.show']);
+        Permission::create(['name' => 'genders.store']);
+        Permission::create(['name' => 'genders.update']);
+        Permission::create(['name' => 'genders.destroy']);
     }
 }

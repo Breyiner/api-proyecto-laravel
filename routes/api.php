@@ -1,6 +1,8 @@
 <?php
 
 use App\Enums\TokenAbility;
+use App\Http\Controllers\API\City\CityController;
+use App\Http\Controllers\API\Gender\GenderController;
 use App\Http\Controllers\API\Status\StatusController;
 use App\Http\Controllers\API\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -53,19 +55,58 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/statuses', [StatusController::class, 'index'])
         ->middleware('permission:statuses.index');
 
-    Route::get('/statuses', [StatusController::class, 'show'])
+    Route::get('/statuses/{status_id}', [StatusController::class, 'show'])
         ->middleware('permission:statuses.show');
 
     Route::post('/statuses', [StatusController::class, 'store'])
         ->middleware('permission:statuses.store');
 
-    Route::put('/statuses', [StatusController::class, 'update'])
+    Route::put('/statuses/{status_id}', [StatusController::class, 'update'])
         ->middleware('permission:statuses.update');
         
-    Route::patch('/statuses', [StatusController::class, 'partialUpdate'])
+    Route::patch('/statuses/{status_id}', [StatusController::class, 'partialUpdate'])
         ->middleware('permission:statuses.update');
 
-    Route::delete('/statuses', [StatusController::class, 'destroy'])
+    Route::delete('/statuses/{status_id}', [StatusController::class, 'destroy'])
         ->middleware('permission:statuses.destroy');
 
+        
+    //Routes city
+    Route::get('/cities', [CityController::class, 'index'])
+        ->middleware('permission:cities.index');
+
+    Route::get('/cities/{city_id}', [CityController::class, 'show'])
+        ->middleware('permission:cities.show');
+
+    Route::post('/cities', [CityController::class, 'store'])
+        ->middleware('permission:cities.store');
+
+    Route::put('/cities/{city_id}', [CityController::class, 'update'])
+        ->middleware('permission:cities.update');
+        
+    Route::patch('/cities/{city_id}', [CityController::class, 'partialUpdate'])
+        ->middleware('permission:cities.update');
+
+    Route::delete('/cities/{city_id}', [CityController::class, 'destroy'])
+        ->middleware('permission:cities.destroy');
+
+
+    //Routes city
+    Route::get('/genders', [GenderController::class, 'index'])
+        ->middleware('permission:genders.index');
+
+    Route::get('/genders/{gender_id}', [GenderController::class, 'show'])
+        ->middleware('permission:genders.show');
+
+    Route::post('/genders', [GenderController::class, 'store'])
+        ->middleware('permission:genders.store');
+
+    Route::put('/genders/{gender_id}', [GenderController::class, 'update'])
+        ->middleware('permission:genders.update');
+        
+    Route::patch('/genders/{gender_id}', [GenderController::class, 'partialUpdate'])
+        ->middleware('permission:genders.update');
+
+    Route::delete('/genders/{gender_id}', [GenderController::class, 'destroy'])
+        ->middleware('permission:genders.destroy');
 });
