@@ -53,5 +53,12 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'profiles.store']);
         Permission::create(['name' => 'profiles.update']);
         Permission::create(['name' => 'profiles.update-own']);
+
+        //Permisos sobre tipos de movimientos
+        Permission::create(['name' => 'transaction-types.index']);
+        Permission::create(['name' => 'transaction-types.show']);
+        Permission::create(['name' => 'transaction-types.store']);
+        Permission::create(['name' => 'transaction-types.update']);
+        Permission::create(['name' => 'transaction-types.destroy']);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Gender\GenderController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
+use App\Http\Controllers\API\TransactionType\TransactionTypeController;
 use App\Http\Controllers\API\User\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Auth\AuthenticationController;
@@ -136,4 +137,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::patch('/profiles/user/{user_id}', [ProfileController::class, 'partialUpdate'])
         ->middleware('permission:profiles.update');
+
+
+    //Routes tipos de movimientos
+    Route::get('/transactionTypes', [TransactionTypeController::class, 'index'])
+        ->middleware('permission:transaction-types.index');
+
+    Route::get('/transactionTypes/{type_id}', [TransactionTypeController::class, 'show'])
+        ->middleware('permission:transaction-types.show');
+
+    Route::post('/transactionTypes', [TransactionTypeController::class, 'store'])
+        ->middleware('permission:transaction-types.store');
+
+    Route::put('/transactionTypes/{type_id}', [TransactionTypeController::class, 'update'])
+        ->middleware('permission:transaction-types.update');
+
+    Route::patch('/transactionTypes/{type_id}', [TransactionTypeController::class, 'partialUpdate'])
+        ->middleware('permission:transaction-types.update');
+
+    Route::delete('/transactionTypes/{type_id}', [TransactionTypeController::class, 'destroy'])
+        ->middleware('permission:transaction-types.destroy');
 });
