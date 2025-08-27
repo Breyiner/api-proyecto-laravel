@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TransactionTypeSeeder::class,
             TransactionCategorySeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

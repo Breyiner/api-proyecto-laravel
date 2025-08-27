@@ -5,6 +5,7 @@ use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Gender\GenderController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
+use App\Http\Controllers\API\Transaction\TransactionController;
 use App\Http\Controllers\API\TransactionCategory\TransactionCategoryController;
 use App\Http\Controllers\API\TransactionType\TransactionTypeController;
 use App\Http\Controllers\API\User\UserController;
@@ -178,4 +179,39 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/transactionCategories/{category_id}', [TransactionCategoryController::class, 'destroy'])
         ->middleware('permission:transaction-types.destroy');
+
+
+    //Routes transactions(movimientos)
+    Route::get('/transactions', [TransactionController::class, 'index'])
+        ->middleware('permission:transactions.index');
+
+    Route::get('/transactions/user/{user_id}', [TransactionController::class, 'indexByUser'])
+        ->middleware('permission:transactions.index');
+
+    Route::get('/transactions/category/{category_id}', [TransactionController::class, 'indexByCategory'])
+        ->middleware('permission:transactions.index');
+
+    // query params = month & year
+    Route::get('/transactions/me/category/{category_id}/period', [TransactionController::class, 'indexByCategoryPeriod'])
+        ->middleware('permission:transactions.index-own');
+
+    //query param = date
+    Route::get('/transactions/me', [TransactionController::class, 'indexByDate'])
+        ->middleware('permission:transactions.index-own');
+
+    Route::get('/transactions/{transaction_id}', [TransactionController::class, 'show'])
+        ->middleware('permission:transactions.show-own');
+    
+    Route::post('/transactions', [TransactionController::class, 'store'])
+        ->middleware('permission:transactions.store');
+
+
+    Route::put('/transactions', [TransactionController::class, 'update'])
+        ->middleware('permission:transactions.update');
+
+    Route::patch('/transactions', [TransactionController::class, 'partialUpdate'])
+        ->middleware('permission:transactions.update');
+
+    Route::delete('/transactions', [TransactionController::class, 'destroy'])
+        ->middleware('permission:transactions.destroy');
 });
