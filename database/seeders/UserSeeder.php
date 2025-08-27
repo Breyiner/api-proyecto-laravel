@@ -23,8 +23,10 @@ class UserSeeder extends Seeder
 
         Profile::create([
             'user_id' => $admin->id,
-            'name' => 'Admin',
+            'first_name' => 'Admin',
             'last_name' => 'Admin',
+            'city_id' => 2,
+            'gender_id' => 2,
         ]);
 
         $superAdmin = User::create([
@@ -35,8 +37,10 @@ class UserSeeder extends Seeder
 
         Profile::create([
             'user_id' => $superAdmin->id,
-            'name' => 'Super Admin',
+            'first_name' => 'Super Admin',
             'last_name' => 'Super Admin',
+            'city_id' => 1,
+            'gender_id' => 1,
         ]);
     }
 }

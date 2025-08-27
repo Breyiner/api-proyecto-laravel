@@ -44,5 +44,14 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'genders.store']);
         Permission::create(['name' => 'genders.update']);
         Permission::create(['name' => 'genders.destroy']);
+
+        //Permisos sobre perfiles
+        Permission::create(['name' => 'profiles.index']);
+        Permission::create(['name' => 'profiles.show']);
+        Permission::create(['name' => 'profiles.show-own']);
+        Permission::create(['name' => 'profiles.show-user']);
+        Permission::create(['name' => 'profiles.store']);
+        Permission::create(['name' => 'profiles.update']);
+        Permission::create(['name' => 'profiles.update-own']);
     }
 }

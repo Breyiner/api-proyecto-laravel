@@ -95,14 +95,7 @@ class CityService {
                 "message" => "Esta ciudad no existe",
             ];
 
-        
-        $data = [];
-
-        foreach ($entryData as $key => $value) {
-            $data[$key] = $value;
-        }
-
-        $city->update($data);
+        $city->update($entryData);
 
         return [
             "error" => false,

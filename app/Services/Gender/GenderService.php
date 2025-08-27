@@ -95,14 +95,7 @@ class GenderService {
                 "message" => "Este género no existe",
             ];
 
-        
-        $data = [];
-
-        foreach ($entryData as $key => $value) {
-            $data[$key] = $value;
-        }
-
-        $gender->update($data);
+        $gender->update($entryData);
 
         return [
             "error" => false,

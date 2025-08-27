@@ -18,15 +18,33 @@ class Profile extends Model
      */
     protected $fillable = [
         'user_id',
-        'name',
+        'first_name',
         'last_name',
+        'city_id',
+        'gender_id',
     ];
 
     /**
-     * Get the user that owns the phone.
+     * Get the user that owns the profile.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the city that owns the profile.
+     */
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    /**
+     * Get the gender that owns the profile.
+     */
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
     }
 }

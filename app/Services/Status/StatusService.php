@@ -95,14 +95,7 @@ class StatusService {
                 "message" => "Este estado no existe",
             ];
 
-        
-        $data = [];
-
-        foreach ($entryData as $key => $value) {
-            $data[$key] = $value;
-        }
-
-        $status->update($data);
+        $status->update($entryData);
 
         return [
             "error" => false,

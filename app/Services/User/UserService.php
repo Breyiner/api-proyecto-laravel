@@ -61,10 +61,14 @@ class UserService
 
         $user->assignRole('Usuario');
 
+        $data['user_id'] = $user->id;
+
         Profile::create([
             'user_id' => $user->id,
-            'name' => $data['name'],
+            'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
+            'city_id' => $data['city_id'],
+            'gender_id' => $data['gender_id'],
         ]);
 
         return [
@@ -86,7 +90,7 @@ class UserService
                 "message" => "Este usuario no existe",
             ];
 
-        $user->update(Arr::only($data, ['email', 'password' /**, 'status_id' */]));
+        $user->update(Arr::only($data, ['email', 'password', 'status_id']));
 
         return [
             "error" => false,
@@ -107,14 +111,7 @@ class UserService
                 "message" => "Este usuario no existe",
             ];
 
-        
-        $data = [];
-
-        foreach ($entryData as $key => $value) {
-            $data[$key] = $value;
-        }
-
-        $user->update($data );
+        $user->update($entryData);
 
         return [
             "error" => false,

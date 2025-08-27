@@ -3,6 +3,7 @@
 use App\Enums\TokenAbility;
 use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Gender\GenderController;
+use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
 use App\Http\Controllers\API\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -91,7 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:cities.destroy');
 
 
-    //Routes city
+    //Routes genders
     Route::get('/genders', [GenderController::class, 'index'])
         ->middleware('permission:genders.index');
 
@@ -109,4 +110,30 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/genders/{gender_id}', [GenderController::class, 'destroy'])
         ->middleware('permission:genders.destroy');
+
+
+    //Routes profiles
+    Route::get('/profiles', [ProfileController::class, 'index'])
+        ->middleware('permission:profiles.index');
+
+    Route::get('/profiles/me', [ProfileController::class, 'showOwn'])
+        ->middleware('permission:profiles.show-own');
+
+    Route::get('/profiles/{profile_id}', [ProfileController::class, 'show'])
+        ->middleware('permission:profiles.show');
+
+    Route::get('/profiles/user/{user_id}', [ProfileController::class, 'showByUser'])
+        ->middleware('permission:profiles.show-user');
+
+    Route::put('/profiles/me', [ProfileController::class, 'updateOwn'])
+        ->middleware('permission:profiles.update-own');
+
+    Route::put('/profiles/user/{user_id}', [ProfileController::class, 'update'])
+        ->middleware('permission:profiles.update');
+        
+    Route::patch('/profiles/me', [ProfileController::class, 'partialUpdateOwn'])
+        ->middleware('permission:profiles.update-own');
+
+    Route::patch('/profiles/user/{user_id}', [ProfileController::class, 'partialUpdate'])
+        ->middleware('permission:profiles.update');
 });

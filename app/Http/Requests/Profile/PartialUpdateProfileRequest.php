@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Profile;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class PartialUpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,10 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required|min:3|max:50',
-            'last_name' => 'required|min:3|max:50',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|max:20',
-            'city_id' => 'required|exists:cities,id',
-            'gender_id' => 'required|exists:genders,id',
+            'first_name' => 'sometimes|string|min:3|max:50',
+            'last_name' => 'sometimes|string|min:3|max:50',
+            'city_id' => 'sometimes|exists:cities,id',
+            'gender_id' => 'sometimes|exists:genders,id',
         ];
     }
 
@@ -39,23 +37,16 @@ class StoreUserRequest extends FormRequest
      */
     public function messages()
     {
+
         return [
-            'first_name.required' => 'El :attribute es obligatorio',
-            'last_name.required' => 'El :attribute es obligatorio',
-            'email.required' => 'El :attribute es obligatorio',
-            'password.required'=>'La :attribute es obligatoria',
-            'city_id.required'=>'La :attribute es obligatoria',
-            'gender_id.required'=>'El :attribute es obligatorio',
+            'first_name.string' => 'El :attribute debe ser en formato de texto.',
+            'last_name.string' => 'El :attribute debe ser en formato de texto.',
 
             'first_name.min' => 'El :attribute debe tener al menos :min caracteres',
             'last_name.min' => 'El :attribute debe tener al menos :min caracteres',
-            'password.min' => 'La :attribute debe tener al menos :min caracteres.',
 
             'first_name.max' => 'El :attribute no debe tener más de :max caracteres',
             'last_name.max' => 'El :attribute no debe tener más de :max caracteres',
-            'password.max' => 'La attribute no debe tener más de :max caracteres',
-
-            'email.unique'   => 'Este :attribute ya está registrado en el sistema.',
 
             'city_id.exists' => 'La :attribute seleccionada no existe.',
             'gender_id.exists' => 'El :attribute seleccionado no existe.',
@@ -73,8 +64,6 @@ class StoreUserRequest extends FormRequest
         return [
             'first_name' => 'nombre',
             'last_name' => 'apellido',
-            'email' => 'correo',
-            'password' => 'contraseña',
             'city_id' => 'ciudad',
             'gender_id' => 'género',
         ];
