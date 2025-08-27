@@ -14,7 +14,7 @@ class CityController extends Controller
 {
     protected $cityService;
 
-    public function __contruct(CityService $cityService) {
+    public function __construct(CityService $cityService) {
 
         $this->cityService = $cityService;
 

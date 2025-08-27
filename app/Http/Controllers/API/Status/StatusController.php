@@ -15,7 +15,7 @@ class StatusController extends Controller
 
     protected $statusService;
 
-    public function __contruct(StatusService $statusService) {
+    public function __construct(StatusService $statusService) {
 
         $this->statusService = $statusService;
 

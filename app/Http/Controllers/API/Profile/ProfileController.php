@@ -14,7 +14,7 @@ class ProfileController extends Controller
 {
     protected $profileService;
 
-    public function __contruct(ProfileService $profileService) {
+    public function __construct(ProfileService $profileService) {
 
         $this->profileService = $profileService;
 

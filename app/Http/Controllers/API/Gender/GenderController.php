@@ -14,7 +14,7 @@ class GenderController extends Controller
 {
     protected $genderService;
 
-    public function __contruct(GenderService $genderService) {
+    public function __construct(GenderService $genderService) {
 
         $this->genderService = $genderService;
 
