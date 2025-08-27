@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 
-class TransactionType extends Model
+class TransactionCategory extends Model
 {
     use HasFactory, Notifiable;
 
@@ -18,13 +18,14 @@ class TransactionType extends Model
      */
     protected $fillable = [
         'name',
+        'transaction_type_id'
     ];
 
     /**
-     * Get the transaction categories associated with the transaction type.
+     * Get the transaction type that owns the transaction category.
      */
-    public function transactionCategories(): HasMany
+    public function transactionType(): BelongsTo
     {
-        return $this->hasMany(TransactionCategory::class);
+        return $this->belongsTo(TransactionType::class);
     }
 }
