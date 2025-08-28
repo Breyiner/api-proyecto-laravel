@@ -13,7 +13,7 @@ class TransactionTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        TransactionType::create(['name' => 'Ingresos']);
-        TransactionType::create(['name' => 'Gastos']);
+        TransactionType::create(['name' => 'Ingresos', 'color_id' => 1]);
+        TransactionType::create(['name' => 'Gastos', 'color_id' => 2]);
     }
 }

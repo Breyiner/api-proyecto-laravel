@@ -3,7 +3,7 @@
 namespace App\Services\GoalTransactionType;
 
 use App\Models\GoalTransactionType;
-use Arr;
+use Illuminate\Support\Arr;
 
 class GoalTransactionTypeService
 {
@@ -53,6 +53,7 @@ class GoalTransactionTypeService
 
         $transType = GoalTransactionType::create([
             'name' => $data['name'],
+            'color_id' => $data['color_id'],
         ]);
 
         return [

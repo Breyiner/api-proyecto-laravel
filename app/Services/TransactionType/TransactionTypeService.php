@@ -53,6 +53,7 @@ class TransactionTypeService {
 
         $transType = TransactionType::create([
             'name' => $data['name'],
+            'color_id' => $data['color_id'],
         ]);
 
         return [

@@ -23,6 +23,7 @@ class UpdateTransactionTypeRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:5|max:20',
+            'color_id' => 'required|numeric|exists:colors,id',
         ];
     }
 
@@ -33,6 +34,9 @@ class UpdateTransactionTypeRequest extends FormRequest
             'name.string' => 'El :attribute debe ser en formato de texto.',
             'name.min' => 'El :attribute debe tener al menos :min caracteres.',
             'name.max' => 'El :attribute no debe tener más de :max caracteres.',
+            'color_id.required' => 'El :attribute es obligatorio.',
+            'color_id.numeric' => 'El :attribute debe ser en formato de número.',
+            'color_id.exists' => 'El :attribute no existe',
         ];
     }
 
@@ -45,6 +49,7 @@ class UpdateTransactionTypeRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
+            'color_id' => 'color',
         ];
     }
 }

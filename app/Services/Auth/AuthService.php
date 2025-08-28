@@ -5,6 +5,7 @@ namespace App\Services\Auth;
 use App\Enums\TokenAbility;
 use App\Models\Profile;
 use App\Models\User;
+use App\Services\Profile\ProfileService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,11 +21,13 @@ class AuthService
             'password' => Hash::make($data['password']),
         ]);
 
-        Profile::create([
+
+        $dataProfile = [
             'user_id' => $user->id,
             'name' => $data['name'],
             'last_name' => $data['last_name'],
-        ]);
+        ];
+        ProfileService::createProfile($dataProfile);
 
         return $user;
     }

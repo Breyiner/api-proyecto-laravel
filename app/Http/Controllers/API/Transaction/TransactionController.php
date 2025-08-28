@@ -84,11 +84,12 @@ class TransactionController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
-    public function indexByCategoryPeriod(TransactionCategoryPeriodRequest $request) {
+    public function indexByCategoryPeriod(TransactionCategoryPeriodRequest $request, $category_id) {
 
         $data = $request->validated();
 
         $user = Auth::user();
+        $data['transaction_category_id'] = $category_id;
         
         $response = $this->transactionService->getTransactionsByCategoryPeriod($user->id, $data);
 

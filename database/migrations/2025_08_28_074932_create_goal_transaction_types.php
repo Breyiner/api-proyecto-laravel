@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('goal_transaction_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->unsignedBigInteger('color_id');
+            $table->foreign('color_id')->references('id')->on('colors');
             $table->timestamps();
         });
     }

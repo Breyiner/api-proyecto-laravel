@@ -69,7 +69,7 @@ class ProfileService {
 
     }
 
-    public function createProfile(array $data) {
+    public static function createProfile(array $data) {
 
         $profile = Profile::create([
             'user_id' => $data['user_id'],

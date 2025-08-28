@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PartialUpdateGoalTransactionTypeRequest extends FormRequest
 {
-/**
+    /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
@@ -23,6 +23,7 @@ class PartialUpdateGoalTransactionTypeRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|min:5|max:20',
+            'color_id' => 'sometimes|numeric|exists:colors,id',
         ];
     }
 
@@ -32,6 +33,8 @@ class PartialUpdateGoalTransactionTypeRequest extends FormRequest
             'name.string' => 'El :attribute debe ser en formato de texto.',
             'name.min' => 'El :attribute debe tener al menos :min caracteres.',
             'name.max' => 'El :attribute no debe tener más de :max caracteres.',
+            'color_id.numeric' => 'El :attribute debe ser en formato de número.',
+            'color_id.exists' => 'El :attribute no existe',
         ];
     }
 
@@ -44,6 +47,7 @@ class PartialUpdateGoalTransactionTypeRequest extends FormRequest
     {
         return [
             'name' => 'nombre',
+            'color_id' => 'color',
         ];
     }
 }
