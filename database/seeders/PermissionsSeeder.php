@@ -24,7 +24,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'users.update-own-password']);
         Permission::create(['name' => 'users.destroy']);
 
-        // Permisos sobre estados
+        // Permisos sobre estados de usuarios
         Permission::create(['name' => 'statuses.index']);
         Permission::create(['name' => 'statuses.show']);
         Permission::create(['name' => 'statuses.store']);
@@ -69,5 +69,12 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'transactions.store']);
         Permission::create(['name' => 'transactions.update']);
         Permission::create(['name' => 'transactions.destroy']);
+
+        // Permisos sobre estados de metas
+        Permission::create(['name' => 'goal-statuses.index']);
+        Permission::create(['name' => 'goal-statuses.show']);
+        Permission::create(['name' => 'goal-statuses.store']);
+        Permission::create(['name' => 'goal-statuses.update']);
+        Permission::create(['name' => 'goal-statuses.destroy']);
     }
 }

@@ -3,6 +3,7 @@
 use App\Enums\TokenAbility;
 use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Gender\GenderController;
+use App\Http\Controllers\API\GoalStatus\GoalStatusController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
 use App\Http\Controllers\API\Transaction\TransactionController;
@@ -55,7 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:users.destroy');
 
     
-    //Routes status
+    //Routes user status
     Route::get('/statuses', [StatusController::class, 'index'])
         ->middleware('permission:statuses.index');
 
@@ -214,4 +215,24 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/transactions', [TransactionController::class, 'destroy'])
         ->middleware('permission:transactions.destroy');
+
+
+    //Routes metas status
+    Route::get('/goalStatuses', [GoalStatusController::class, 'index'])
+        ->middleware('permission:goal-statuses.index');
+
+    Route::get('/goalStatuses/{status_id}', [GoalStatusController::class, 'show'])
+        ->middleware('permission:goal-statuses.show');
+
+    Route::post('/goalStatuses', [GoalStatusController::class, 'store'])
+        ->middleware('permission:goal-statuses.store');
+
+    Route::put('/goalStatuses/{status_id}', [GoalStatusController::class, 'update'])
+        ->middleware('permission:goal-statuses.update');
+        
+    Route::patch('/goalStatuses/{status_id}', [GoalStatusController::class, 'partialUpdate'])
+        ->middleware('permission:goal-statuses.update');
+
+    Route::delete('/goalStatuses/{status_id}', [GoalStatusController::class, 'destroy'])
+        ->middleware('permission:goal-statuses.destroy');
 });
