@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             CitySeeder::class,
             GenderSeeder::class,
+            ColorSeeder::class,
             UserSeeder::class,
             TransactionTypeSeeder::class,
             TransactionCategorySeeder::class,

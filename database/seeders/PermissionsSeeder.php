@@ -45,6 +45,13 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'genders.update']);
         Permission::create(['name' => 'genders.destroy']);
 
+        //Permisos sobre colores
+        Permission::create(['name' => 'colors.index']);
+        Permission::create(['name' => 'colors.show']);
+        Permission::create(['name' => 'colors.store']);
+        Permission::create(['name' => 'colors.update']);
+        Permission::create(['name' => 'colors.destroy']);
+
         //Permisos sobre perfiles
         Permission::create(['name' => 'profiles.index']);
         Permission::create(['name' => 'profiles.show']);

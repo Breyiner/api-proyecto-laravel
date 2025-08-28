@@ -2,6 +2,7 @@
 
 use App\Enums\TokenAbility;
 use App\Http\Controllers\API\City\CityController;
+use App\Http\Controllers\API\Color\ColorController;
 use App\Http\Controllers\API\Gender\GenderController;
 use App\Http\Controllers\API\Goal\GoalController;
 use App\Http\Controllers\API\GoalStatus\GoalStatusController;
@@ -143,6 +144,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::patch('/profiles/user/{user_id}', [ProfileController::class, 'partialUpdate'])
         ->middleware('permission:profiles.update');
+
+
+    //Routes colors
+    Route::get('/colors', [ColorController::class, 'index'])
+        ->middleware('permission:colors.index');
+
+    Route::get('/colors/{color_id}', [ColorController::class, 'show'])
+        ->middleware('permission:colors.show');
+
+    Route::post('/colors', [ColorController::class, 'store'])
+        ->middleware('permission:colors.store');
+
+    Route::put('/colors/{color_id}', [ColorController::class, 'update'])
+        ->middleware('permission:colors.update');
+        
+    Route::patch('/colors/{color_id}', [ColorController::class, 'partialUpdate'])
+        ->middleware('permission:colors.update');
+
+    Route::delete('/colors/{color_id}', [ColorController::class, 'destroy'])
+        ->middleware('permission:colors.destroy');
 
 
     //Routes tipos de movimientos
