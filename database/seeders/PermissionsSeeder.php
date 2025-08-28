@@ -87,11 +87,18 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'goals.destroy']);
         Permission::create(['name' => 'goals.destroy-safe']);
 
-        //Permisos sobre tipos de movimientos
+        //Permisos sobre tipos de movimientos de metas
         Permission::create(['name' => 'goal-transaction-types.index']);
         Permission::create(['name' => 'goal-transaction-types.show']);
         Permission::create(['name' => 'goal-transaction-types.store']);
         Permission::create(['name' => 'goal-transaction-types.update']);
         Permission::create(['name' => 'goal-transaction-types.destroy']);
+
+        //Permisos sobre movimientos metas
+        Permission::create(['name' => 'goal-transactions.index']);
+        Permission::create(['name' => 'goal-transactions.show']);
+        Permission::create(['name' => 'goal-transactions.store']);
+        Permission::create(['name' => 'goal-transactions.update']);
+        Permission::create(['name' => 'goal-transactions.destroy']);
     }
 }

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             GoalStatusSeeder::class,
             GoalSeeder::class,
             GoalTransactionTypeSeeder::class,
+            GoalTransactionSeeder::class,
         ]);
     }
 }

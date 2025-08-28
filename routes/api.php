@@ -5,6 +5,7 @@ use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Gender\GenderController;
 use App\Http\Controllers\API\Goal\GoalController;
 use App\Http\Controllers\API\GoalStatus\GoalStatusController;
+use App\Http\Controllers\API\GoalTransaction\GoalTransactionController;
 use App\Http\Controllers\API\GoalTransactionType\GoalTransactionTypeController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
@@ -287,4 +288,25 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/goalTransactionTypes/{type_id}', [GoalTransactionTypeController::class, 'destroy'])
         ->middleware('permission:goal-transaction-types.destroy');
+
+
+
+    //Routes movimientos de metas
+    Route::get('/goalTransactions', [GoalTransactionController::class, 'index'])
+        ->middleware('permission:goal-transactions.index');
+
+    Route::get('/goalTransactions/{transaction_id}', [GoalTransactionController::class, 'show'])
+        ->middleware('permission:goal-transactions.show');
+
+    Route::post('/goalTransactions', [GoalTransactionController::class, 'store'])
+        ->middleware('permission:goal-transactions.store');
+
+    Route::put('/goalTransactions/{transaction_id}', [GoalTransactionController::class, 'update'])
+        ->middleware('permission:goal-transactions.update');
+        
+    Route::patch('/goalTransactions/{transaction_id}', [GoalTransactionController::class, 'partialUpdate'])
+        ->middleware('permission:goal-transactions.update');
+
+    Route::delete('/goalTransactions/{transaction_id}', [GoalTransactionController::class, 'destroy'])
+        ->middleware('permission:goal-transactions.destroy');
 });
