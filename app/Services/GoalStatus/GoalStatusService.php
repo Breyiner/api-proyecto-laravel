@@ -3,6 +3,7 @@
 namespace App\Services\GoalStatus;
 
 use App\Models\GoalStatus;
+use Arr;
 
 class GoalStatusService
 {

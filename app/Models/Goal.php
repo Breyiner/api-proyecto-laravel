@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 
-class Transaction extends Model
+class Goal extends Model
 {
     use HasFactory, Notifiable;
 
@@ -19,13 +19,15 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'amount',
+        'target_amount',
         'description',
-        'transaction_category_id'
+        'due_date',
+        'completed',
+        'status_id',
     ];
 
     /**
-     * Get the user that owns the transaction.
+     * Get the user that owns the goal.
      */
     public function user(): BelongsTo
     {

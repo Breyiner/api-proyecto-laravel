@@ -76,5 +76,15 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'goal-statuses.store']);
         Permission::create(['name' => 'goal-statuses.update']);
         Permission::create(['name' => 'goal-statuses.destroy']);
+
+        // Permisos sobre estados metas
+        Permission::create(['name' => 'goals.index']);
+        Permission::create(['name' => 'goals.index-own']);
+        Permission::create(['name' => 'goals.show']);
+        Permission::create(['name' => 'goals.show-own']);
+        Permission::create(['name' => 'goals.store']);
+        Permission::create(['name' => 'goals.update']);
+        Permission::create(['name' => 'goals.destroy']);
+        Permission::create(['name' => 'goals.destroy-safe']);
     }
 }

@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             TransactionCategorySeeder::class,
             TransactionSeeder::class,
             GoalStatusSeeder::class,
+            GoalSeeder::class,
         ]);
     }
 }

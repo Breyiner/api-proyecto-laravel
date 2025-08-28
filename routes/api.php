@@ -3,6 +3,7 @@
 use App\Enums\TokenAbility;
 use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Gender\GenderController;
+use App\Http\Controllers\API\Goal\GoalController;
 use App\Http\Controllers\API\GoalStatus\GoalStatusController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
@@ -207,13 +208,13 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:transactions.store');
 
 
-    Route::put('/transactions', [TransactionController::class, 'update'])
+    Route::put('/transactions/{transaction_id}', [TransactionController::class, 'update'])
         ->middleware('permission:transactions.update');
 
-    Route::patch('/transactions', [TransactionController::class, 'partialUpdate'])
+    Route::patch('/transactions/{transaction_id}', [TransactionController::class, 'partialUpdate'])
         ->middleware('permission:transactions.update');
 
-    Route::delete('/transactions', [TransactionController::class, 'destroy'])
+    Route::delete('/transactions/{transaction_id}', [TransactionController::class, 'destroy'])
         ->middleware('permission:transactions.destroy');
 
 
@@ -235,4 +236,33 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/goalStatuses/{status_id}', [GoalStatusController::class, 'destroy'])
         ->middleware('permission:goal-statuses.destroy');
+
+
+    //Rutas metas
+    Route::get('/goals', [GoalController::class, 'index'])
+        ->middleware('permission:goals.index');
+
+    Route::get('/goals/user/{user_id}', [GoalController::class, 'indexGoalsByUser'])
+        ->middleware('permission:goals.index');
+    
+    Route::get('/goals/me', [GoalController::class, 'indexGoalsActiveByUser'])
+        ->middleware('permission:goals.index-own');
+    
+    Route::get('/goals/{goal_id}', [GoalController::class, 'show'])
+        ->middleware('permission:goals.show-own');
+    
+    Route::post('/goals', [GoalController::class, 'store'])
+        ->middleware('permission:goals.store');
+
+    Route::put('/goals/{goal_id}', [GoalController::class, 'update'])
+        ->middleware('permission:goals.update');
+
+    Route::patch('/goals/{goal_id}', [GoalController::class, 'partialUpdate'])
+        ->middleware('permission:goals.update');
+
+    Route::delete('/goals/{goal_id}/safe', [GoalController::class, 'destroySafe'])
+        ->middleware('permission:goals.destroy-safe');
+    
+    Route::delete('/goals/{goal_id}', [GoalController::class, 'destroy'])
+        ->middleware('permission:goals.destroy');
 });
