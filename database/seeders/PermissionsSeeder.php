@@ -60,7 +60,7 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'transaction-types.store']);
         Permission::create(['name' => 'transaction-types.update']);
         Permission::create(['name' => 'transaction-types.destroy']);
-
+        
         //Permisos sobre movimientos
         Permission::create(['name' => 'transactions.index']);
         Permission::create(['name' => 'transactions.index-own']);
@@ -86,5 +86,12 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'goals.update']);
         Permission::create(['name' => 'goals.destroy']);
         Permission::create(['name' => 'goals.destroy-safe']);
+
+        //Permisos sobre tipos de movimientos
+        Permission::create(['name' => 'goal-transaction-types.index']);
+        Permission::create(['name' => 'goal-transaction-types.show']);
+        Permission::create(['name' => 'goal-transaction-types.store']);
+        Permission::create(['name' => 'goal-transaction-types.update']);
+        Permission::create(['name' => 'goal-transaction-types.destroy']);
     }
 }
