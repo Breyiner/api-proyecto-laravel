@@ -42,8 +42,9 @@ class AuthenticationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Inicio de sesión exitoso',
-            'data' => $result
-        ]);
+            'data' => []
+        ])->cookie($result['cookieToken'])
+          ->cookie($result['cookieRefreshToken']);
     }
 
     public function refreshToken (Request $request) 

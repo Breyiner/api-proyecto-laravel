@@ -44,9 +44,33 @@ class AuthService
 
         $refreshToken = $this->generateRefreshToken($user);
 
+        $cookieToken = cookie(
+            'access_token',
+            $accessToken,
+            60 * 24 * 365 * 100,
+            '/',
+            null,
+            false,
+            false,
+            false,
+            'lax'
+        );
+
+        $cookieRefreshToken = cookie(
+            'refresh_token',
+            $refreshToken,
+            60 * 24 * 365 * 100,
+            '/',
+            null,
+            false,
+            false,
+            false,
+            'lax'
+        );
+
         return [
-            'access_token'  => $accessToken,
-            'refresh_token' => $refreshToken,
+            'cookieToken' => $cookieToken,
+            'cookieRefreshToken' => $cookieRefreshToken,
         ];
     }
 
