@@ -11,6 +11,7 @@ use App\Http\Controllers\API\GoalTransaction\GoalTransactionController;
 use App\Http\Controllers\API\GoalTransactionType\GoalTransactionTypeController;
 use App\Http\Controllers\API\Permission\PermissionController;
 use App\Http\Controllers\API\Profile\ProfileController;
+use App\Http\Controllers\API\Role\RoleController;
 use App\Http\Controllers\API\Status\StatusController;
 use App\Http\Controllers\API\Transaction\TransactionController;
 use App\Http\Controllers\API\TransactionCategory\TransactionCategoryController;
@@ -100,6 +101,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/permissions/{permission_id}', [PermissionController::class, 'destroy'])
         ->middleware('permission:permissions.destroy');
+
+        
+    //Routes roles
+    Route::get('/roles', [RoleController::class, 'index'])
+        ->middleware('permission:roles.index');
+
+    Route::get('/roles/{role_id}', [RoleController::class, 'show'])
+        ->middleware('permission:roles.show');
+
+    Route::post('/roles', [RoleController::class, 'store'])
+        ->middleware('permission:roles.store');
+
+    Route::put('/roles/{role_id}', [RoleController::class, 'update'])
+        ->middleware('permission:roles.update');
+        
+    Route::patch('/roles/{role_id}', [RoleController::class, 'partialUpdate'])
+        ->middleware('permission:roles.update');
+
+    Route::delete('/roles/{role_id}', [RoleController::class, 'destroy'])
+        ->middleware('permission:roles.destroy');
 
         
     //Routes city
