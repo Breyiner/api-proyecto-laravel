@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 
 class PermissionsSeeder extends Seeder
 {
@@ -13,6 +13,14 @@ class PermissionsSeeder extends Seeder
      */
     public function run(): void
     {
+
+        //Permisos sobre los permisos
+        Permission::create(['name' => 'permissions.index']);
+        Permission::create(['name' => 'permissions.show']);
+        Permission::create(['name' => 'permissions.store']);
+        Permission::create(['name' => 'permissions.update']);
+        Permission::create(['name' => 'permissions.destroy']);
+
         //Permisos sobre usuarios
         Permission::create(['name' => 'users.index']);
         Permission::create(['name' => 'users.show']);

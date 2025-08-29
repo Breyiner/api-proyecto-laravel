@@ -9,6 +9,7 @@ use App\Http\Controllers\API\Goal\GoalController;
 use App\Http\Controllers\API\GoalStatus\GoalStatusController;
 use App\Http\Controllers\API\GoalTransaction\GoalTransactionController;
 use App\Http\Controllers\API\GoalTransactionType\GoalTransactionTypeController;
+use App\Http\Controllers\API\Permission\PermissionController;
 use App\Http\Controllers\API\Profile\ProfileController;
 use App\Http\Controllers\API\Status\StatusController;
 use App\Http\Controllers\API\Transaction\TransactionController;
@@ -79,6 +80,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/statuses/{status_id}', [StatusController::class, 'destroy'])
         ->middleware('permission:statuses.destroy');
+
+        
+    //Routes permissions
+    Route::get('/permissions', [PermissionController::class, 'index'])
+        ->middleware('permission:permissions.index');
+
+    Route::get('/permissions/{permission_id}', [PermissionController::class, 'show'])
+        ->middleware('permission:permissions.show');
+
+    Route::post('/permissions', [PermissionController::class, 'store'])
+        ->middleware('permission:permissions.store');
+
+    Route::put('/permissions/{permission_id}', [PermissionController::class, 'update'])
+        ->middleware('permission:permissions.update');
+        
+    Route::patch('/permissions/{permission_id}', [PermissionController::class, 'partialUpdate'])
+        ->middleware('permission:permissions.update');
+
+    Route::delete('/permissions/{permission_id}', [PermissionController::class, 'destroy'])
+        ->middleware('permission:permissions.destroy');
 
         
     //Routes city
