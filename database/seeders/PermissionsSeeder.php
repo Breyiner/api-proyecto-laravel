@@ -67,6 +67,14 @@ class PermissionsSeeder extends Seeder
         Permission::create(['name' => 'transaction-types.store']);
         Permission::create(['name' => 'transaction-types.update']);
         Permission::create(['name' => 'transaction-types.destroy']);
+
+        //Permisos sobre categorias de movimientos
+        Permission::create(['name' => 'transaction-categories.index']);
+        Permission::create(['name' => 'transaction-categories.index-own']);
+        Permission::create(['name' => 'transaction-categories.show']);
+        Permission::create(['name' => 'transaction-categories.store']);
+        Permission::create(['name' => 'transaction-categories.update']);
+        Permission::create(['name' => 'transaction-categories.destroy']);
         
         //Permisos sobre movimientos
         Permission::create(['name' => 'transactions.index']);
@@ -103,9 +111,16 @@ class PermissionsSeeder extends Seeder
 
         //Permisos sobre movimientos metas
         Permission::create(['name' => 'goal-transactions.index']);
+        Permission::create(['name' => 'goal-transactions.index-own']);
         Permission::create(['name' => 'goal-transactions.show']);
+        Permission::create(['name' => 'goal-transactions.show-own']);
         Permission::create(['name' => 'goal-transactions.store']);
         Permission::create(['name' => 'goal-transactions.update']);
         Permission::create(['name' => 'goal-transactions.destroy']);
+
+        //Permisos balance
+        Permission::create(['name' => 'balance.show']);
+        Permission::create(['name' => 'balance.show-own']);
+
     }
 }

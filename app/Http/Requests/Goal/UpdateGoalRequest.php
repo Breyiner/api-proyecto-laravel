@@ -15,7 +15,7 @@ class UpdateGoalRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:5|max:30',
-            'target_amount' => 'required|numeric|min:100|decimal:2',
+            'target_amount' => 'required|numeric|min:100',
             'description' => 'nullable|string|min:10|max:100',
             'due_date' => 'required|date',
             'completed' => 'required|boolean',
@@ -44,7 +44,6 @@ class UpdateGoalRequest extends FormRequest
             'description.max' => 'La :attribute no debe tener más de :max caracteres',
 
             'target_amount.min' => 'El :attribute debe ser de al menos :min',
-            'target_amount.decimal' => 'El :attribute debe tener máximo :decimal decimales',
 
             'status_id.exists' => 'El :attribute seleccionado no existe',
         ];

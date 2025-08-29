@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('goal_id');
             $table->foreign('goal_id')->references('id')->on('goals');
+            $table->string('name');
             $table->decimal('amount', 12,2);
             $table->string('description');
             $table->unsignedBigInteger('transaction_type_id');

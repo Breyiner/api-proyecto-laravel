@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionCategory\PartialUpdateTransactionCategoryRequest;
 use App\Http\Requests\TransactionCategory\StoreTransactionCategoryRequest;
+use App\Http\Requests\TransactionCategory\TransactionCategoryPeriodRequest;
 use App\Http\Requests\TransactionCategory\UpdateTransactionCategoryRequest;
 use App\Services\TransactionCategory\TransactionCategoryService;
 use Illuminate\Http\Request;
@@ -45,6 +46,21 @@ class TransactionCategoryController extends Controller
             return ResponseFormatter::error($response['message'], $response['code']);
 
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
+    public function indexSummaryPeriod(TransactionCategoryPeriodRequest $request) {
+
+        $data = $request->validated();
+
+        $user = auth()->user();
+
+        $response = $this->transactionCategoryService->getSummaryTypePeriod($user->id, $data);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+
     }
 
     /**

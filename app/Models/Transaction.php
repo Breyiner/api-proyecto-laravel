@@ -24,11 +24,22 @@ class Transaction extends Model
         'transaction_category_id'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d',
+        'updated_at' => 'datetime:Y-m-d',
+        'amount' => 'integer',
+    ];
+
     /**
      * Get the user that owns the transaction.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(TransactionCategory::class);
     }
 }

@@ -6,7 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Transaction\PartialUpdateTransactionRequest;
 use App\Http\Requests\Transaction\StoreTransactionRequest;
-use App\Http\Requests\Transaction\TransactionCategoryPeriodRequest;
+use App\Http\Requests\Transaction\TransactionPeriodRequest;
 use App\Http\Requests\Transaction\TransactionDateRequest;
 use App\Http\Requests\Transaction\UpdateTransactionRequest;
 use App\Models\Transaction;
@@ -84,7 +84,23 @@ class TransactionController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
-    public function indexByCategoryPeriod(TransactionCategoryPeriodRequest $request, $category_id) {
+
+    public function indexByPeriod(TransactionPeriodRequest $request) {
+
+        $data = $request->validated();
+
+        $user = Auth::user();
+        
+        $response = $this->transactionService->getTransactionsByPeriod($user->id, $data);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+
+    }
+
+    public function indexByCategoryPeriod(TransactionPeriodRequest $request, $category_id) {
 
         $data = $request->validated();
 

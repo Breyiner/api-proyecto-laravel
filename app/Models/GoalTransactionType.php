@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 
 class GoalTransactionType extends Model
@@ -28,5 +29,10 @@ class GoalTransactionType extends Model
 
         return $this->belongsTo(Color::class);
 
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(GoalTransaction::class);
     }
 }

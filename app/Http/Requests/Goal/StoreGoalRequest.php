@@ -16,7 +16,7 @@ class StoreGoalRequest extends FormRequest
         return [
             'user_id' => 'required|numeric|exists:users,id',
             'name' => 'required|string|min:5|max:30',
-            'target_amount' => 'required|numeric|min:100|decimal:2',
+            'target_amount' => 'required|numeric|min:100',
             'description' => 'nullable|string|min:10|max:100',
             'due_date' => 'required|date',
         ];
@@ -41,7 +41,6 @@ class StoreGoalRequest extends FormRequest
             'description.max' => 'La :attribute no debe tener más de :max caracteres',
 
             'target_amount.min' => 'El :attribute debe ser de al menos :min',
-            'target_amount.decimal' => 'El :attribute debe tener máximo :decimal decimales',
 
             'user_id.exists' => 'El :attribute seleccionado no existe',
         ];

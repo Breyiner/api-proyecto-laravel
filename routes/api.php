@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\TokenAbility;
+use App\Http\Controllers\API\Balance\BalanceController;
 use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Color\ColorController;
 use App\Http\Controllers\API\Gender\GenderController;
@@ -188,22 +189,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Routes categorias
     Route::get('/transactionCategories', [TransactionCategoryController::class, 'index'])
-        ->middleware('permission:transaction-types.index');
+        ->middleware('permission:transaction-categories.index');
+
+    // query params month && year
+    Route::get('/transactionCategories/me/period', [TransactionCategoryController::class, 'indexSummaryPeriod'])
+        ->middleware('permission:transaction-categories.index-own');  // colores
 
     Route::get('/transactionCategories/{category_id}', [TransactionCategoryController::class, 'show'])
-        ->middleware('permission:transaction-types.show');
+        ->middleware('permission:transaction-categories.show');
 
     Route::post('/transactionCategories', [TransactionCategoryController::class, 'store'])
-        ->middleware('permission:transaction-types.store');
+        ->middleware('permission:transaction-categories.store');
 
     Route::put('/transactionCategories/{category_id}', [TransactionCategoryController::class, 'update'])
-        ->middleware('permission:transaction-types.update');
+        ->middleware('permission:transaction-categories.update');
 
     Route::patch('/transactionCategories/{category_id}', [TransactionCategoryController::class, 'partialUpdate'])
-        ->middleware('permission:transaction-types.update');
+        ->middleware('permission:transaction-categories.update');
 
     Route::delete('/transactionCategories/{category_id}', [TransactionCategoryController::class, 'destroy'])
-        ->middleware('permission:transaction-types.destroy');
+        ->middleware('permission:transaction-categories.destroy');
 
 
     //Routes transactions(movimientos)
@@ -218,18 +223,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // query params = month & year
     Route::get('/transactions/me/category/{category_id}/period', [TransactionController::class, 'indexByCategoryPeriod'])
-        ->middleware('permission:transactions.index-own');
+        ->middleware('permission:transactions.index-own'); // colores
+
+    // query params = month & year
+    Route::get('/transactions/me/period', [TransactionController::class, 'indexByPeriod'])
+        ->middleware('permission:transactions.index-own');  // colores
 
     //query param = date
     Route::get('/transactions/me', [TransactionController::class, 'indexByDate'])
-        ->middleware('permission:transactions.index-own');
+        ->middleware('permission:transactions.index-own');  // colores
 
     Route::get('/transactions/{transaction_id}', [TransactionController::class, 'show'])
         ->middleware('permission:transactions.show-own');
     
     Route::post('/transactions', [TransactionController::class, 'store'])
         ->middleware('permission:transactions.store');
-
 
     Route::put('/transactions/{transaction_id}', [TransactionController::class, 'update'])
         ->middleware('permission:transactions.update');
@@ -269,6 +277,10 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware('permission:goals.index');
     
     Route::get('/goals/me', [GoalController::class, 'indexGoalsActiveByUser'])
+        ->middleware('permission:goals.index-own');
+
+    // Query params month & year
+    Route::get('/goals/me/summary', [GoalController::class, 'indexGoalsSummaryByUser'])
         ->middleware('permission:goals.index-own');
     
     Route::get('/goals/{goal_id}', [GoalController::class, 'show'])
@@ -316,8 +328,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/goalTransactions', [GoalTransactionController::class, 'index'])
         ->middleware('permission:goal-transactions.index');
 
+    // Query params date
+    Route::get('/goalTransactions/me', [GoalTransactionController::class, 'indexOwnDate'])
+        ->middleware('permission:goal-transactions.index-own'); // colores
+
+    // Query params month & year
+    Route::get('/goalTransactions/me/period', [GoalTransactionController::class, 'indexOwnPeriod'])
+        ->middleware('permission:goal-transactions.index-own'); // colores
+
+    // Query params month & year
+    Route::get('/goalTransactions/goal/{goal_id}/period', [GoalTransactionController::class, 'indexByGoalPeriod'])
+        ->middleware('permission:goal-transactions.index-own');  // colores
+
     Route::get('/goalTransactions/{transaction_id}', [GoalTransactionController::class, 'show'])
-        ->middleware('permission:goal-transactions.show');
+        ->middleware('permission:goal-transactions.show-own');
 
     Route::post('/goalTransactions', [GoalTransactionController::class, 'store'])
         ->middleware('permission:goal-transactions.store');
@@ -330,4 +354,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::delete('/goalTransactions/{transaction_id}', [GoalTransactionController::class, 'destroy'])
         ->middleware('permission:goal-transactions.destroy');
+
+    
+    //Ruta balance 
+    // query params month & year
+    Route::get('/balance/me', [BalanceController::class, 'showPeriod'])
+        ->middleware('permission:balance.show-own');
 });

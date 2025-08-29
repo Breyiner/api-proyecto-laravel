@@ -4,13 +4,22 @@ namespace App\Http\Controllers\API\GoalTransaction;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GoalTransaction\GoalTransactionDateRequest;
+use App\Http\Requests\GoalTransaction\GoalTransactionPeriodRequest;
 use App\Http\Requests\GoalTransaction\StoreGoalTransactionRequest;
 use App\Http\Requests\GoalTransaction\UpdateGoalTransactionRequest;
 use App\Http\Requests\GoalTransaction\PartialUpdateGoalTransactionRequest;
+use App\Models\Goal;
+use App\Models\GoalTransaction;
 use App\Services\GoalTransaction\GoalTransactionService;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 
 class GoalTransactionController extends Controller
 {
+
+    use AuthorizesRequests;
+
     protected $goalTransactionService;
 
     public function __construct(GoalTransactionService $goalTransactionService)
@@ -32,11 +41,68 @@ class GoalTransactionController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
     }
 
+    public function indexOwnDate(GoalTransactionDateRequest $request) {
+
+        $data = $request->validated();
+
+        $user = Auth::user();
+
+        $response = $this->goalTransactionService->getOWnDate($user->id, $data);
+
+        if ($response['error']) {
+            return ResponseFormatter::error($response['message'], $response['code']);
+        }
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
+
+    }
+
+    public function indexOwnPeriod(GoalTransactionPeriodRequest $request) {
+
+        $data = $request->validated();
+
+        $user = Auth::user();
+
+        $response = $this->goalTransactionService->getOWnPeriod($user->id, $data);
+
+        if ($response['error']) {
+            return ResponseFormatter::error($response['message'], $response['code']);
+        }
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
+        
+    }
+
+    public function indexByGoalPeriod(GoalTransactionPeriodRequest $request, $goal_id) 
+    {
+
+        $data = $request->validated();
+
+        $goal = Goal::find($goal_id);
+
+        $this->authorize('viewTransactions', $goal);
+
+        $response = $this->goalTransactionService->getByGoalPeriod($goal_id, $data);
+
+        if ($response['error']) {
+            return ResponseFormatter::error($response['message'], $response['code']);
+        }
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
+
+        $transaction = GoalTransaction::find($id);
+
+        $goal = $transaction->goal;
+
+        $this->authorize('viewTransaction', $goal);
+
         $response = $this->goalTransactionService->getGoalTransaction($id);
 
         if ($response['error']) {

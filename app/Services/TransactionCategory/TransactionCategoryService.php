@@ -4,6 +4,8 @@ namespace App\Services\TransactionCategory;
 
 use App\Models\TransactionCategory;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TransactionCategoryService
 {
@@ -45,6 +47,55 @@ class TransactionCategoryService
             "code" => 200,
             "message" => "Categoría obtenida con éxito",
             "data" => $transCategory
+        ];
+
+    }
+
+    public function getSummaryTypePeriod($user_id, $data) {
+
+        $month = $data['month'];
+        $year = $data['year'];
+
+        $categories = DB::select(
+            "SELECT 
+                        c.id, 
+                        c.name,
+                        COUNT(t.id) AS total_transactions,
+                        CAST(COALESCE(SUM(t.amount),0) AS SIGNED) AS sum_transactions,
+                        col.hex AS color,
+                        DATE_FORMAT(c.created_at, '%Y-%m-%d') AS created_at,
+                        DATE_FORMAT(c.updated_at, '%Y-%m-%d') AS updated_at
+                    FROM transaction_categories c
+                    INNER JOIN transactions t ON t.transaction_category_id = c.id
+                    INNER JOIN transaction_types tt ON c.transaction_type_id = tt.id
+                    INNER JOIN colors col ON tt.color_id = col.id
+                    WHERE t.user_id = ?
+                    AND MONTH(t.created_at) = ?
+                    AND YEAR(t.created_at) = ?
+                    GROUP BY c.id, c.name, col.hex, c.created_at, c.updated_at
+                    ORDER BY sum_transactions DESC",
+            [$user_id, $month, $year]
+        );
+
+        if (count($categories) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay categorías registradas",
+                "data" => $categories
+            ];
+        
+        $categories = collect($categories)->map(function($category) {
+            $category->total_transactions = (int) $category->total_transactions;
+            $category->sum_transactions = (float) $category->sum_transactions;
+            return $category;
+        });
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Categorías obtenidas con éxito",
+            "data" => $categories
         ];
 
     }

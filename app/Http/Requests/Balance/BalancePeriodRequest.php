@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Transaction;
+namespace App\Http\Requests\Balance;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TransactionCategoryPeriodRequest extends FormRequest
+class BalancePeriodRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,6 @@ class TransactionCategoryPeriodRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => 'required|numeric|exists:transaction_categories,id',
             'month' => 'required|numeric|min:1|max:12',
             'year' => 'required|numeric|digits:4|min:2000|max:' . date('Y'),
         ];
@@ -24,17 +23,12 @@ class TransactionCategoryPeriodRequest extends FormRequest
     {
         return [
             // required
-            'category_id.required' => 'La :attribute es obligatoria',
             'month.required' => 'El :attribute es obligatorio',
             'year.required' => 'El :attribute es obligatorio',
 
             // numeric
-            'category_id.numeric' => 'La :attribute debe ser numérica',
             'month.numeric' => 'El :attribute debe ser numérico',
             'year.numeric' => 'El :attribute debe ser numérico',
-
-            // exists
-            'category_id.exists' => 'La :attribute seleccionada no existe',
 
             // rango
             'month.min' => 'El :attribute debe ser al menos :min',
@@ -48,16 +42,8 @@ class TransactionCategoryPeriodRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'category_id' => 'categoría',
             'month' => 'mes',
             'year' => 'año',
         ];
     }
-
-    protected function prepareForValidation()
-{
-    $this->merge([
-        'category_id' => $this->route('category_id'),
-    ]);
-}
 }

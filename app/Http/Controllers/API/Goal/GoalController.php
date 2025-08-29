@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Goal;
 
 use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Goal\GoalPeriodRequest;
 use App\Http\Requests\Goal\PartialUpdateGoalRequest;
 use App\Http\Requests\Goal\StoreGoalRequest;
 use App\Http\Requests\Goal\UpdateGoalRequest;
@@ -89,6 +90,21 @@ class GoalController extends Controller
             return ResponseFormatter::error($response['message'], $response['code']);
 
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
+    public function indexGoalsSummaryByUser(GoalPeriodRequest $request) {
+
+        $data = $request->validated();
+
+        $user = Auth::user();
+
+        $response = $this->goalService->getGoalsSummaryByUser($user->id, $data);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+
     }
 
     /**

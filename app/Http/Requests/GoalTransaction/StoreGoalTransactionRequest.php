@@ -15,7 +15,7 @@ class StoreGoalTransactionRequest extends FormRequest
     {
         return [
             'goal_id' => 'required|numeric|exists:goals,id',
-            'amount' => 'required|numeric|min:100|decimal:2',
+            'amount' => 'required|numeric|min:100',
             'description' => 'required|string|min:5|max:255',
             'transaction_type_id' => 'required|numeric|exists:goal_transaction_types,id',
         ];

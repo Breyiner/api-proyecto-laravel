@@ -15,7 +15,7 @@ class PartialUpdateGoalRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string|min:5|max:30',
-            'target_amount' => 'sometimes|numeric|min:100|decimal:2',
+            'target_amount' => 'sometimes|numeric|min:100',
             'description' => 'nullable|string|min:10|max:100',
             'due_date' => 'sometimes|date',
             'completed' => 'sometimes|boolean',
@@ -38,7 +38,6 @@ class PartialUpdateGoalRequest extends FormRequest
             'description.max' => 'La :attribute no debe tener más de :max caracteres',
 
             'target_amount.min' => 'El :attribute debe ser de al menos :min',
-            'target_amount.decimal' => 'El :attribute debe tener máximo :decimal decimales',
 
             'status_id.exists' => 'El :attribute seleccionado no existe',
         ];

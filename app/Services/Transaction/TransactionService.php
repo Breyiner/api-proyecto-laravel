@@ -3,6 +3,7 @@
 namespace App\Services\Transaction;
 
 use App\Models\Transaction;
+use App\Models\TransactionCategory;
 
 class TransactionService
 {
@@ -94,11 +95,53 @@ class TransactionService
     public function getTransactionsByCategoryPeriod($user_id, $data) {
 
         $transactions = Transaction::query()
-                                ->where('user_id', $user_id)
-                                ->where('transaction_category_id', $data['transaction_category_id'])
-                                ->whereMonth('created_at', $data['month'])
-                                ->whereYear('created_at', $data['year'])
-                                ->get();
+                    ->join('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
+                    ->join('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
+                    ->join('colors as col', 'tt.color_id', '=', 'col.id')
+                    ->where('transactions.user_id', $user_id)
+                    ->where('transactions.transaction_category_id', $data['transaction_category_id'])
+                    ->whereMonth('transactions.created_at', $data['month'])
+                    ->whereYear('transactions.created_at', $data['year'])
+                    ->orderBy('transactions.id', 'desc')
+                    ->select(
+                        'transactions.*',
+                        'col.hex as color'
+                    )
+                    ->get();
+
+
+        if (count($transactions) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay movimientos registrados para estos parámetros",
+                "data" => $transactions
+            ];
+
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Movimientos obtenidos con éxito",
+            "data" => $transactions
+        ];
+    }
+
+
+    public function getTransactionsByPeriod($user_id, $data) {
+
+        $transactions = Transaction::query()
+                    ->leftJoin('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
+                    ->leftJoin('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
+                    ->leftJoin('colors as col', 'tt.color_id', '=', 'col.id')
+                    ->where('transactions.user_id', $user_id)
+                    ->whereMonth('transactions.created_at', $data['month'])
+                    ->whereYear('transactions.created_at', $data['year'])
+                    ->select(
+                        'transactions.*',
+                        'col.hex as color'
+                    )
+                    ->get();
 
         if (count($transactions) == 0) 
             return [
@@ -120,9 +163,16 @@ class TransactionService
     public function getTransactionsByDate($user_id, $data) {
 
         $transactions = Transaction::query()
-                                ->where('user_id', $user_id)
-                                ->whereDate('created_at', $data['date'])
-                                ->get();
+                    ->leftJoin('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
+                    ->leftJoin('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
+                    ->leftJoin('colors as col', 'tt.color_id', '=', 'col.id')
+                    ->where('transactions.user_id', $user_id)
+                    ->whereDate('transactions.created_at', $data['date'])
+                    ->select(
+                        'transactions.*',
+                        'col.hex as color'
+                    )
+                    ->get();
 
         if (count($transactions) == 0) 
             return [
@@ -143,6 +193,15 @@ class TransactionService
     }
 
     public function createTransaction($data) {
+
+        $category = TransactionCategory::find($data['transaction_category_id']);
+
+        $transcType = $category->transactionType;
+
+        match ($transcType->id) {
+            1 => $data['name'] = "Recibiste dinero por $category->name",
+            2 => $data['name'] = "Gastaste dinero en $category->name",
+        };
 
         $transaction = Transaction::create($data);
 

@@ -23,8 +23,7 @@ class StoreTransactionRequest extends FormRequest
     {
         return [
             'user_id' => 'required|numeric|exists:users,id',
-            'name' => 'required|string|min:5|max:30',
-            'amount' => 'required|numeric|min:100|decimal:2',
+            'amount' => 'required|numeric|min:100',
             'description' => 'nullable|string|min:10|max:100',
             'transaction_category_id' => 'required|numeric|exists:transaction_categories,id',
         ];
@@ -40,30 +39,21 @@ class StoreTransactionRequest extends FormRequest
         return [
             // Validaciones required
             'user_id.required' => 'El :attribute es obligatorio',
-            'name.required' => 'El :attribute es obligatorio',
             'amount.required' => 'El :attribute es obligatorio',
             'transaction_category_id.required' => 'La :attribute es obligatoria',
 
             // Validaciones de tipo
             'user_id.numeric' => 'El :attribute debe ser numérico',
-            'name.string' => 'El :attribute debe ser en formato de texto',
             'amount.numeric' => 'El :attribute debe ser numérico',
             'transaction_category_id.numeric' => 'La :attribute debe ser numérica',
             'description.string' => 'La :attribute debe ser en formato de texto',
 
-            // Validaciones de longitud mínima
-            'name.min' => 'El :attribute debe tener al menos :min caracteres',
             'description.min' => 'La :attribute debe tener al menos :min caracteres',
 
-            // Validaciones de longitud máxima
-            'name.max' => 'El :attribute no debe tener más de :max caracteres',
             'description.max' => 'La :attribute no debe tener más de :max caracteres',
 
             // Validaciones de valor mínimo
             'amount.min' => 'El :attribute debe ser de al menos :min',
-
-            // Validaciones de decimales
-            'amount.decimal' => 'El :attribute debe tener máximo :decimal decimales',
 
             // Validaciones de existencia
             'user_id.exists' => 'El :attribute seleccionado no existe',
@@ -80,7 +70,6 @@ class StoreTransactionRequest extends FormRequest
     {
         return [
             'user_id' => 'usuario',
-            'name' => 'nombre',
             'amount' => 'monto',
             'description' => 'descripción',
             'transaction_category_id' => 'categoría de transacción',
