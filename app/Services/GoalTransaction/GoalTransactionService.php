@@ -5,6 +5,7 @@ namespace App\Services\GoalTransaction;
 use App\Models\Goal;
 use App\Models\GoalTransaction;
 use App\Models\GoalTransactionType;
+use App\Services\Goal\GoalService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -162,10 +163,23 @@ class   GoalTransactionService
 
         $transcType = GoalTransactionType::find($data['transaction_type_id']);
 
-        match ($transcType->id) {
-            1 => $data['name'] = "Ingresaste dinero a la meta: $goal->name",
-            2 => $data['name'] = "Retiraste dinero de la meta: $goal->name",
-        };
+
+        switch ($transcType->id) {
+            case 1:
+                $data['name'] = "Ingresaste dinero a la meta: $goal->name";
+                break;
+            
+            case 2:
+                if(($goal->progress - $data['amount']) < 0) 
+                    return [
+                        "error" => true,
+                        "code" => 422,
+                        "message" => "Fondos insuficientes en la meta para realizar el retiro.",
+                    ];
+                
+                $data['name'] = "Retiraste dinero de la meta: $goal->name";
+                break;
+        }
 
         $transaction = GoalTransaction::create([
             'goal_id' => $data['goal_id'],
@@ -175,10 +189,12 @@ class   GoalTransactionService
             'transaction_type_id' => $data['transaction_type_id'],
         ]);
 
+        if($goal->progress >= $goal->target_amount) GoalService::updateCompleted($goal->id, true);
+
         return [
             'error' => false,
             'code' => 201,
-            'message' => 'Transacción creada con éxito',
+            'message' => 'Movimiento registrado con éxito',
         ];
     }
 

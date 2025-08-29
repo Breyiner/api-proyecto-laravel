@@ -165,6 +165,14 @@ class GoalService
         ];
     }
 
+    public static function updateCompleted($goal_id, bool $completed) {
+
+        $goal = Goal::find($goal_id);
+
+        $goal->update(["completed" => $completed]);
+
+    }
+
     public function updateGoal(array $data, $id) {
         $goal = Goal::find($id);
         if (!$goal) 
