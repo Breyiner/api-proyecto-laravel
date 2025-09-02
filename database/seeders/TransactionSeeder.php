@@ -21,7 +21,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Recibiste dinero por Salario',
             'amount' => 2500000,
             'description' => 'Salario correspondiente a agosto',
-            'created_at' => Carbon::create(2025, 8, 25),
         ]);
 
         Transaction::create([
@@ -30,7 +29,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Recibiste dinero por Freelance',
             'amount' => 800000,
             'description' => 'Desarrollo de aplicación para cliente externo',
-            'created_at' => Carbon::create(2025, 8, 10),
         ]);
 
         // GASTOS para Usuario 1
@@ -40,7 +38,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Gastaste dinero en Comida',
             'amount' => 350000,
             'description' => 'Compra mensual de mercado',
-            'created_at' => Carbon::create(2025, 8, 15),
         ]);
 
         Transaction::create([
@@ -49,7 +46,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Gastaste dinero en Transporte',
             'amount' => 200000,
             'description' => 'Tanqueo para el carro en agosto',
-            'created_at' => Carbon::create(2025, 9, 20),
         ]);
 
         // INGRESOS para Usuario 2
@@ -59,7 +55,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Recibiste dinero por inversiones',
             'amount' => 600000,
             'description' => 'Ganancia mensual de CDT',
-            'created_at' => Carbon::create(2025, 7, 30),
         ]);
 
         Transaction::create([
@@ -68,7 +63,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Recibiste dinero por Regalos',
             'amount' => 150000,
             'description' => 'Dinero recibido como regalo de cumpleaños',
-            'created_at' => Carbon::create(2025, 8, 5),
         ]);
 
         // GASTOS para Usuario 2
@@ -78,7 +72,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Gastaste dinero en Vivienda',
             'amount' => 1200000,
             'description' => 'Pago mensual de arriendo',
-            'created_at' => Carbon::create(2025, 8, 1),
         ]);
 
         Transaction::create([
@@ -87,7 +80,6 @@ class TransactionSeeder extends Seeder
             'name' => 'Gastaste dinero en Salud',
             'amount' => 90000,
             'description' => 'Chequeo general en clínica',
-            'created_at' => Carbon::create(2025, 8, 18),
         ]);
     }
 }

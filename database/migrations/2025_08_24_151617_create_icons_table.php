@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->string('descripcion')->nullable();
+        Schema::create('icons', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 50);
+            $table->string('icon', 100);
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->dropColumn('descripcion');
-        });
+        Schema::dropIfExists('icons');
     }
 };

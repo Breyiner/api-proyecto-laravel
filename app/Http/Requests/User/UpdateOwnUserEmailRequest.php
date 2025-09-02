@@ -22,7 +22,7 @@ class UpdateOwnUserEmailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email|unique:users,email,' . $this->user()->id,
+            'email' => 'required|email|confirmed|unique:users,email,' . $this->user()->id,
         ];
     }
 
@@ -32,6 +32,7 @@ class UpdateOwnUserEmailRequest extends FormRequest
             'email.required' => 'El :attribute es obligatorio.',
             'email.email' => 'El :attribute no tiene un formato válido.',
             'email.unique' => 'Este :attribute ya está registrado.',
+            'email.confirmed' => 'La confirmación del :attribute no coincide.',
         ];
     }
 

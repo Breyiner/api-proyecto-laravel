@@ -2,6 +2,7 @@
 
 namespace App\Services\Goal;
 
+use App\Models\Color;
 use App\Models\Goal;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -25,6 +26,28 @@ class GoalService
         ];
     }
 
+    public function getCountGoals() {
+
+        $goals = Goal::where('status_id', 1)->get();
+
+        if (count($goals) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay metas registradas",
+                "data" => $goals
+            ];
+
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Metas obtenidos con éxito",
+            "data" => count($goals)
+        ];
+
+    }
+
     public function getGoal($id) {
         $goal = Goal::find($id);
         if (!$goal) 
@@ -37,8 +60,8 @@ class GoalService
         $goal['progress'] = $goal->progress;
         $goal['total_transactions'] = $goal->total_transactions;
 
-        $goal->makeHidden('transactions');
-        $goal->makeHidden('status_id');
+        // $goal->makeHidden('transactions');
+        // $goal->makeHidden('status_id');
         $goal->makeHidden('updated_at');
 
         return [
@@ -113,26 +136,33 @@ class GoalService
 
     public function getGoalsSummaryByUser($user_id, $data) {
 
-        $goals = Goal::query()
-                    ->join('goal_transactions', 'goals.id', '=', 'goal_transactions.goal_id')
-                    ->where('goals.user_id', $user_id)
-                    ->where('goals.status_id', 1) // solo metas activas
-                    ->whereMonth('goal_transactions.created_at', $data['month'])
-                    ->whereYear('goal_transactions.created_at', $data['year'])
-                    ->select(
-                        'goals.name',
-                        DB::raw('COUNT(goal_transactions.id) as movimientos'),
-                        DB::raw('CAST(SUM(
-                                                CASE 
-                                                    WHEN goal_transactions.transaction_type_id = 1 THEN goal_transactions.amount
-                                                    WHEN goal_transactions.transaction_type_id = 2 THEN -goal_transactions.amount
-                                                    ELSE 0
-                                                END
-                                            ) as unsigned) as total')
-                    )
-                    ->groupBy('goals.id', 'goals.name')
-                    ->orderBy('total', 'desc')
-                    ->get();
+        $metasColor = Color::where('name', 'Metas')->first()?->hex ?? null;
+
+        $goals = DB::select("
+                            SELECT 
+                                g.id,
+                                g.name,
+                                COUNT(*) as total_transactions,
+                                CAST(SUM(
+                                    CASE 
+                                        WHEN gt.transaction_type_id = 1 THEN gt.amount
+                                        WHEN gt.transaction_type_id = 2 THEN -gt.amount
+                                        ELSE 0
+                                    END
+                                ) AS SIGNED) as sum_transactions,
+                                ? as color,
+                                i.icon as icon
+                            FROM goals g
+                            INNER JOIN goal_transactions gt ON g.id = gt.goal_id
+                            LEFT JOIN icons i ON i.name = 'Metas'
+                            WHERE g.user_id = ?
+                                AND g.status_id = 1
+                                AND MONTH(gt.created_at) = ?
+                                AND YEAR(gt.created_at) = ?
+                            GROUP BY g.id, g.name, i.icon
+                            ORDER BY total_transactions DESC
+                        ", [$metasColor, $user_id, (int)$data['month'], (int)$data['year']]);
+
 
         if (count($goals) == 0) 
             return [
@@ -152,6 +182,7 @@ class GoalService
 
     public function createGoal(array $data) {
         $goal = Goal::create([
+            'user_id' => $data['user_id'],
             'name' => $data['name'],
             'target_amount' => $data['target_amount'],
             'description' => $data['description'] ?? null,

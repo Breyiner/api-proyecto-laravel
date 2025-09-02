@@ -115,6 +115,14 @@ class GenderService {
                 "message" => "Este género no existe",
             ];
 
+        if ($gender->profiles()->exists()) {
+            return [
+                "error" => true,
+                "code" => 409,
+                "message" => "No se puede eliminar el genero porque tiene perfiles relacionados",
+            ];
+        }
+
         $gender->delete();
 
         return [

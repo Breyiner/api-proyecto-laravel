@@ -13,7 +13,7 @@ class PartialUpdateColorRequest extends FormRequest
 
     public function rules(): array
     {
-        $colorId = $this->route('id');
+        $colorId = $this->route('color_id');
 
         return [
             'name' => 'sometimes|string|min:3|max:50|unique:colors,name,' . $colorId,

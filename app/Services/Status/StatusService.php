@@ -115,6 +115,14 @@ class StatusService {
                 "message" => "Este estado no existe",
             ];
 
+        if ($status->users()->exists()) {
+            return [
+                "error" => true,
+                "code" => 409,
+                "message" => "No se puede eliminar el estado porque tiene usuarios relacionados",
+            ];
+        }
+
         $status->delete();
 
         return [

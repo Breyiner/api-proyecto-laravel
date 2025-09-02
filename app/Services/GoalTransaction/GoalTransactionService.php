@@ -32,22 +32,48 @@ class   GoalTransactionService
         ];
     }
 
+    public function getCountTransactions() {
+
+        $transactions = GoalTransaction::all();
+
+        if (count($transactions) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay movimientos registrados",
+                "data" => $transactions
+            ];
+
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Movimientos obtenidos con éxito",
+            "data" => count($transactions)
+        ];
+
+    }
+
     public function getOwnDate($user_id, $data) {
 
         $transactions = GoalTransaction::query()
-                    ->join('goals', 'goal_transactions.goal_id', '=', 'goals.id')
-                    ->join('goal_transaction_types as gtt', 'goal_transactions.transaction_type_id', '=', 'gtt.id')
-                    ->join('colors as col', 'gtt.color_id', '=', 'col.id')
-                    ->where('goals.user_id', $user_id)
-                    ->whereDate('goal_transactions.created_at', $data['date'])
-                    ->orderBy('goal_transactions.id', 'desc')
-                    ->get([
-                        'goal_transactions.id',
-                        'goal_transactions.goal_id',
-                        DB::raw("DATE(goal_transactions.created_at) as created_at"),
-                        DB::raw("CAST(goal_transactions.amount AS SIGNED) as amount"),
-                        'col.hex as color',
-                    ]);
+            ->join('goals', 'goal_transactions.goal_id', '=', 'goals.id')
+            ->join('goal_transaction_types as gtt', 'goal_transactions.transaction_type_id', '=', 'gtt.id')
+            ->join('colors as col', 'gtt.color_id', '=', 'col.id')
+            ->join('icons as ic', 'gtt.icon_id', '=', 'ic.id')
+            ->where('goals.user_id', $user_id)
+            ->whereDate('goal_transactions.created_at', $data['date'])
+            ->orderBy('goal_transactions.id', 'desc')
+            ->get([
+                'goal_transactions.id',
+                'goal_transactions.name',
+                'goal_transactions.goal_id',
+                DB::raw("DATE(goal_transactions.created_at) as created_at"),
+                DB::raw("CAST(goal_transactions.amount AS SIGNED) as amount"),
+                'col.hex as color',
+                'ic.icon as icon',
+            ]);
+
 
 
         if ($transactions->isEmpty()) {
@@ -107,16 +133,52 @@ class   GoalTransactionService
     public function getByGoalPeriod($goal_id, $data) {
 
         $transactions = GoalTransaction::query()
-                    ->join('goal_transaction_types as gtt', 'goal_transactions.transaction_type_id', '=', 'gtt.id')
-                    ->join('colors as col', 'gtt.color_id', '=', 'col.id')
-                    ->where('goal_transactions.goal_id', $goal_id)
-                    ->whereMonth('goal_transactions.created_at', $data['month'])
-                    ->whereYear('goal_transactions.created_at', $data['year'])
-                    ->orderBy('goal_transactions.id', 'desc')
-                    ->get([
-                        'goal_transactions.*',
-                        'col.hex as color',
-                    ]);
+            ->join('goal_transaction_types as gtt', 'goal_transactions.transaction_type_id', '=', 'gtt.id')
+            ->join('colors as col', 'gtt.color_id', '=', 'col.id')
+            ->join('icons as ic', 'gtt.icon_id', '=', 'ic.id')
+            ->where('goal_transactions.goal_id', $goal_id)
+            ->whereMonth('goal_transactions.created_at', $data['month'])
+            ->whereYear('goal_transactions.created_at', $data['year'])
+            ->orderBy('goal_transactions.id', 'desc')
+            ->get([
+                'goal_transactions.*',
+                'col.hex as color',
+                'ic.icon as icon', 
+            ]);
+
+
+        if ($transactions->isEmpty()) {
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay transacciones registradas",
+                "data" => $transactions
+            ];
+        }
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Transacciones obtenidas con éxito",
+            "data" => $transactions
+        ];
+
+    }
+
+    public function getByGoal($goal_id) {
+
+        $transactions = GoalTransaction::query()
+            ->join('goal_transaction_types as gtt', 'goal_transactions.transaction_type_id', '=', 'gtt.id')
+            ->join('colors as col', 'gtt.color_id', '=', 'col.id')
+            ->join('icons as ic', 'gtt.icon_id', '=', 'ic.id') 
+            ->where('goal_transactions.goal_id', $goal_id)
+            ->orderBy('goal_transactions.id', 'desc')
+            ->get([
+                'goal_transactions.*',
+                'col.hex as color',
+                'ic.icon as icon',
+            ]);
+
 
         if ($transactions->isEmpty()) {
             return [
@@ -166,7 +228,7 @@ class   GoalTransactionService
 
         switch ($transcType->id) {
             case 1:
-                $data['name'] = "Ingresaste dinero a la meta: $goal->name";
+                $data['name'] = "Agregaste dinero a la meta: $goal->name";
                 break;
             
             case 2:

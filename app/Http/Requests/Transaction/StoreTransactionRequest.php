@@ -26,6 +26,7 @@ class StoreTransactionRequest extends FormRequest
             'amount' => 'required|numeric|min:100',
             'description' => 'nullable|string|min:10|max:100',
             'transaction_category_id' => 'required|numeric|exists:transaction_categories,id',
+            'created_at' => 'sometimes|date'
         ];
     }
 
@@ -47,6 +48,7 @@ class StoreTransactionRequest extends FormRequest
             'amount.numeric' => 'El :attribute debe ser numérico',
             'transaction_category_id.numeric' => 'La :attribute debe ser numérica',
             'description.string' => 'La :attribute debe ser en formato de texto',
+            'created_at.date' => 'La :attribute debe ser en formato de fecha',
 
             'description.min' => 'La :attribute debe tener al menos :min caracteres',
 
@@ -73,6 +75,7 @@ class StoreTransactionRequest extends FormRequest
             'amount' => 'monto',
             'description' => 'descripción',
             'transaction_category_id' => 'categoría de transacción',
+            'created_at' => 'fecha de creación'
         ];
     }
 }

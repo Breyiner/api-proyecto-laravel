@@ -20,6 +20,7 @@ class TransactionType extends Model
     protected $fillable = [
         'name',
         'color_id',
+        'icon_id'
     ];
 
     /**

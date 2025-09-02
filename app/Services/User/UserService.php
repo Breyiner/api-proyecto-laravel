@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 
 class UserService
@@ -32,6 +33,61 @@ class UserService
         ];
     }
 
+    public function getCountUsers() {
+
+        $users = User::where('status_id', 1)->get();
+
+        if (count($users) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay usuarios registrados",
+                "data" => $users
+            ];
+
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuarios obtenidos con éxito",
+            "data" => count($users)
+        ];
+
+    }
+
+    public function getAllInformation() {
+        $users = User::with(['profile.city', 'profile.gender', 'roles', 'status'])->get();
+
+        if ($users->isEmpty()) {
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay usuarios registrados",
+                "data" => []
+            ];
+        }
+
+        $data = $users->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'email' => $user->email,
+                'first_name' => optional($user->profile)->first_name,
+                'last_name' => optional($user->profile)->last_name,
+                'city' => optional(optional($user->profile)->city)->name,
+                'gender' => optional(optional($user->profile)->gender)->name,
+                'role' => optional($user->roles()->first())->name,
+                'status' => optional($user->status)->name,
+            ];
+        });
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Información obtenida con éxito",
+            "data" => $data
+        ];
+}
+
     public function getUser($id) {
 
         $user = User::find($id);
@@ -43,11 +99,18 @@ class UserService
                 "message" => "Este usuario no existe",
             ];
 
+        $role = $user->roles()->first();
+
         return [
             "error" => false,
             "code" => 200,
             "message" => "Usuario obtenido con éxito",
-            "data" => $user
+            "data" => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'status_id' => $user->status_id,
+                'role_id' => $role ? $role->id : null,
+            ]
         ];
 
     }
@@ -90,6 +153,21 @@ class UserService
                 "message" => "Este usuario no existe",
             ];
 
+        if (isset($data['role_id'])) {
+            $authUser = Auth::user();
+            if ($authUser && $authUser->can('users.update-role')) {
+                $role = $user->roles()->first();
+                if ($role) {
+                    $user->removeRole($role->name);
+                }
+                $newRole = Role::find($data['role_id']);
+                if ($newRole) {
+                    $user->assignRole($newRole);
+                }
+            }
+            unset($data['role_id']);
+        }
+
         $user->update(Arr::only($data, ['email', 'password', 'status_id']));
 
         return [
@@ -110,6 +188,21 @@ class UserService
                 "code" => 404,
                 "message" => "Este usuario no existe",
             ];
+
+        if (isset($entryData['role_id'])) {
+            $authUser = Auth::user();
+            if ($authUser && $authUser->can('users.update-role')) {
+                $role = $user->roles()->first();
+                if ($role) {
+                    $user->removeRole($role->name);
+                }
+                $newRole = Role::find($entryData['role_id']);
+                if ($newRole) {
+                    $user->assignRole($newRole);
+                }
+            }
+            unset($entryData['role_id']);
+        }
 
         $user->update($entryData);
 
@@ -206,6 +299,25 @@ class UserService
             "message" => "Usuario actualizado con éxito",
         ];
 
+    }
+
+    public function softDeleteUser($id) {
+        $user = User::find($id);
+
+        if (!$user)
+            return [
+                "error" => true,
+                "code" => 404,
+                "message" => "Este usuario no existe",
+            ];
+
+        $user->update(['status_id' => 2]);
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Usuario desactivado con éxito",
+        ];
     }
 
     public function deleteUser($id) {

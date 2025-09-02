@@ -41,6 +41,17 @@ class GoalTransactionController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
     }
 
+    public function indexCountTransactions()
+    {
+        $response = $this->goalTransactionService->getCountTransactions();
+
+        if ($response['error']) {
+            return ResponseFormatter::error($response['message'], $response['code']);
+        }
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
+    }
+
     public function indexOwnDate(GoalTransactionDateRequest $request) {
 
         $data = $request->validated();
@@ -89,6 +100,22 @@ class GoalTransactionController extends Controller
         }
 
         return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
+    }
+
+    public function indexByGoal($goal_id) {
+
+        $goal = Goal::find($goal_id);
+
+        $this->authorize('viewTransactions', $goal);
+
+        $response = $this->goalTransactionService->getByGoal($goal_id);
+
+        if ($response['error']) {
+            return ResponseFormatter::error($response['message'], $response['code']);
+        }
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data'] ?? []);
+
     }
 
     /**

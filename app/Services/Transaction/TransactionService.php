@@ -4,6 +4,7 @@ namespace App\Services\Transaction;
 
 use App\Models\Transaction;
 use App\Models\TransactionCategory;
+use Illuminate\Support\Facades\DB;
 
 class TransactionService
 {
@@ -26,6 +27,28 @@ class TransactionService
             "message" => "Movimientos obtenidos con éxito",
             "data" => $transactions
         ];
+    }
+
+    public function getCountTransactions() {
+
+        $transactions = Transaction::all();
+
+        if (count($transactions) == 0) 
+            return [
+                "error" => false,
+                "code" => 200,
+                "message" => "No hay movimientos registrados",
+                "data" => $transactions
+            ];
+
+
+        return [
+            "error" => false,
+            "code" => 200,
+            "message" => "Movimientos obtenidos con éxito",
+            "data" => count($transactions)
+        ];
+
     }
 
     public function getTransaction($id) {
@@ -95,19 +118,22 @@ class TransactionService
     public function getTransactionsByCategoryPeriod($user_id, $data) {
 
         $transactions = Transaction::query()
-                    ->join('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
-                    ->join('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
-                    ->join('colors as col', 'tt.color_id', '=', 'col.id')
-                    ->where('transactions.user_id', $user_id)
-                    ->where('transactions.transaction_category_id', $data['transaction_category_id'])
-                    ->whereMonth('transactions.created_at', $data['month'])
-                    ->whereYear('transactions.created_at', $data['year'])
-                    ->orderBy('transactions.id', 'desc')
-                    ->select(
-                        'transactions.*',
-                        'col.hex as color'
-                    )
-                    ->get();
+                ->join('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
+                ->join('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
+                ->join('colors as col', 'tt.color_id', '=', 'col.id')
+                ->leftJoin('icons as i', 'c.icon_id', '=', 'i.id') // left join: icono opcional
+                ->where('transactions.user_id', $user_id)
+                ->where('transactions.transaction_category_id', $data['transaction_category_id'])
+                ->whereMonth('transactions.created_at', $data['month'])
+                ->whereYear('transactions.created_at', $data['year'])
+                ->orderBy('transactions.id', 'desc')
+                ->select(
+                    'transactions.*',
+                    'col.hex as color',
+                    DB::raw('COALESCE(i.icon, "") as icon')
+                )
+                ->get();
+
 
 
         if (count($transactions) == 0) 
@@ -135,6 +161,7 @@ class TransactionService
                     ->leftJoin('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
                     ->leftJoin('colors as col', 'tt.color_id', '=', 'col.id')
                     ->where('transactions.user_id', $user_id)
+                    ->where('tt.id', $data['transaction_type_id'])
                     ->whereMonth('transactions.created_at', $data['month'])
                     ->whereYear('transactions.created_at', $data['year'])
                     ->select(
@@ -163,16 +190,20 @@ class TransactionService
     public function getTransactionsByDate($user_id, $data) {
 
         $transactions = Transaction::query()
-                    ->leftJoin('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
-                    ->leftJoin('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
-                    ->leftJoin('colors as col', 'tt.color_id', '=', 'col.id')
-                    ->where('transactions.user_id', $user_id)
-                    ->whereDate('transactions.created_at', $data['date'])
-                    ->select(
-                        'transactions.*',
-                        'col.hex as color'
-                    )
-                    ->get();
+            ->leftJoin('transaction_categories as c', 'transactions.transaction_category_id', '=', 'c.id')
+            ->leftJoin('transaction_types as tt', 'c.transaction_type_id', '=', 'tt.id')
+            ->leftJoin('colors as col', 'tt.color_id', '=', 'col.id')
+            ->leftJoin('icons as ic', 'c.icon_id', '=', 'ic.id')
+            ->where('transactions.user_id', $user_id)
+            ->where('tt.id', $data['type_id'])
+            ->whereDate('transactions.created_at', $data['date'])
+            ->select(
+                'transactions.*',
+                'col.hex as color',
+                'ic.icon as icon'
+            )
+            ->get();
+
 
         if (count($transactions) == 0) 
             return [

@@ -18,7 +18,7 @@ class StoreGoalRequest extends FormRequest
             'name' => 'required|string|min:5|max:30',
             'target_amount' => 'required|numeric|min:100',
             'description' => 'nullable|string|min:10|max:100',
-            'due_date' => 'required|date',
+            'due_date' => 'nullable|date',
         ];
     }
 

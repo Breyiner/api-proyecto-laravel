@@ -21,7 +21,8 @@ class Transaction extends Model
         'name',
         'amount',
         'description',
-        'transaction_category_id'
+        'transaction_category_id',
+        'created_at',
     ];
 
     protected $casts = [
@@ -42,4 +43,18 @@ class Transaction extends Model
     {
         return $this->belongsTo(TransactionCategory::class);
     }
+
+    public function getTransactionTypeIdAttribute()
+{
+    if ($this->transaction_category_id) {
+        $category = TransactionCategory::with('transactionType')
+            ->find($this->transaction_category_id);
+        
+        return $category?->transactionType?->id;
+    }
+    
+    return null;
+}
+
+    protected $appends = ['transaction_type_id'];
 }

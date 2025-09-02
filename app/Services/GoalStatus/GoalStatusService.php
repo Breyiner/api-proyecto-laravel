@@ -115,6 +115,14 @@ class GoalStatusService
                 "message" => "Este estado no existe",
             ];
 
+        if ($status->goals()->exists()) {
+            return [
+                "error" => true,
+                "code" => 409,
+                "message" => "No se puede eliminar el estado porque tiene metas relacionadas",
+            ];
+        }
+
         $status->delete();
 
         return [

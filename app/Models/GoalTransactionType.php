@@ -20,6 +20,7 @@ class GoalTransactionType extends Model
     protected $fillable = [
         'name',
         'color_id',
+        'icon_id'
     ];
 
     /**

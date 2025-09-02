@@ -22,5 +22,15 @@ class ColorSeeder extends Seeder
             'name' => 'Rojo',
             'hex' => '#dc3545',
         ]);
+
+        Color::create([
+            'name' => 'Metas',
+            'hex' => '#ffd500',
+        ]);
+
+        Color::create([
+            'name' => 'Balance',
+            'hex' => '#1e90ff',
+        ]);
     }
 }

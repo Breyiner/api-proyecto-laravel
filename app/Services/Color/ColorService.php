@@ -137,6 +137,14 @@ class ColorService
             ];
         }
 
+        if ($color->goalTransacTypes()->exists() || $color->TransacTypes()->exists()) {
+            return [
+                "error" => true,
+                "code" => 409,
+                "message" => "No se puede eliminar el color porque tiene elementos relacionados",
+            ];
+        }
+
         $color->delete();
 
         return [

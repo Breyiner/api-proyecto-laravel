@@ -41,6 +41,27 @@ class UserController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
+    public function indexCount()
+    {
+        $response = $this->userService->getCountUsers();
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
+    public function indexAllInformation() {
+
+        $response = $this->userService->getAllInformation();
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);   
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+
+    }
+
     
     /**
      * Display the specified resource.
@@ -156,6 +177,17 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $response = $this->userService->deleteUser($id);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
+    public function softDelete($id)
+    {
+        $response = $this->userService->softDeleteUser($id);
+
 
         if($response['error'])
             return ResponseFormatter::error($response['message'], $response['code']);

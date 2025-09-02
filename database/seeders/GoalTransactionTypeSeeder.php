@@ -13,7 +13,7 @@ class GoalTransactionTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        GoalTransactionType::create(['name' => 'Ingresos', 'color_id' => 2]);
-        GoalTransactionType::create(['name' => 'Egresos', 'color_id' => 1]);
+        GoalTransactionType::create(['name' => 'Ingresos', 'color_id' => 2, 'icon_id'=> 3]);
+        GoalTransactionType::create(['name' => 'Egresos', 'color_id' => 1, 'icon_id'=> 3]);
     }
 }

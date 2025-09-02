@@ -35,6 +35,17 @@ class TransactionCategoryController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
+    public function indexByType($type_id) {
+
+        $response = $this->transactionCategoryService->getByType($type_id);
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+
+    }
+
     /**
      * Display the specified resource.
      */
@@ -48,11 +59,13 @@ class TransactionCategoryController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
-    public function indexSummaryPeriod(TransactionCategoryPeriodRequest $request) {
+    public function indexSummaryPeriod(TransactionCategoryPeriodRequest $request, $type_id) {
 
         $data = $request->validated();
 
         $user = auth()->user();
+
+        $data['type_id'] = $type_id;
 
         $response = $this->transactionCategoryService->getSummaryTypePeriod($user->id, $data);
 

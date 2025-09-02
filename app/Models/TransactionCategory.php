@@ -20,7 +20,8 @@ class TransactionCategory extends Model
      */
     protected $fillable = [
         'name',
-        'transaction_type_id'
+        'transaction_type_id',
+        'icon_id'
     ];
 
     /**

@@ -105,15 +105,23 @@ class CityService {
     }
 
     public function deleteCity($id) {
-
         $city = City::find($id);
-        
-        if (!$city) 
+
+        if (!$city)
             return [
                 "error" => true,
                 "code" => 404,
-                "message" => "Esta ciudad no existe",
+                "message" => "La ciudad no existe",
             ];
+
+        // Verifica si tiene perfiles relacionados
+        if ($city->profiles()->exists()) {
+            return [
+                "error" => true,
+                "code" => 409,
+                "message" => "No se puede eliminar la ciudad porque tiene perfiles relacionados",
+            ];
+        }
 
         $city->delete();
 

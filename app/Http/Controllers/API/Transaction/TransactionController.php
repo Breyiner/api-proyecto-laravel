@@ -40,6 +40,16 @@ class TransactionController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
+    public function indexCountTransactions()
+    {
+        $response = $this->transactionService->getCountTransactions();
+
+        if($response['error'])
+            return ResponseFormatter::error($response['message'], $response['code']);
+
+        return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -85,11 +95,13 @@ class TransactionController extends Controller
     }
 
 
-    public function indexByPeriod(TransactionPeriodRequest $request) {
+    public function indexByPeriod(TransactionPeriodRequest $request, $type_id) {
 
         $data = $request->validated();
 
         $user = Auth::user();
+
+        $data['transaction_type_id'] = $type_id;
         
         $response = $this->transactionService->getTransactionsByPeriod($user->id, $data);
 
@@ -115,11 +127,13 @@ class TransactionController extends Controller
         return ResponseFormatter::success($response['message'], $response['code'], $response['data']??[]);
     }
 
-    public function indexByDate(TransactionDateRequest $request) {
+    public function indexByDate(TransactionDateRequest $request, $type_id) {
 
         $data = $request->validated();
 
         $user = Auth::user();
+
+        $data['type_id'] = $type_id;
         
         $response = $this->transactionService->getTransactionsByDate($user->id, $data);
 

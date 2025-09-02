@@ -24,7 +24,7 @@ class ResponseFormatter
         "success"=> false,
         "code" => $status,
         "message"=> $message,
-        "erros" => $errors
+        "errors" => $errors
       ], $status);
 
     }

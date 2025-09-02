@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('transaction_type_id');
             $table->foreign('transaction_type_id')->references('id')->on('transaction_types');
+            $table->unsignedBigInteger('icon_id');
+            $table->foreign('icon_id')->references('id')->on('icons');
             $table->timestamps();
         });
     }

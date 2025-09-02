@@ -54,6 +54,7 @@ class GoalTransactionTypeService
         $transType = GoalTransactionType::create([
             'name' => $data['name'],
             'color_id' => $data['color_id'],
+            'icon_id' => $data['icon_id'],
         ]);
 
         return [
@@ -75,7 +76,7 @@ class GoalTransactionTypeService
                 "message" => "Este tipo de movimiento de meta no existe",
             ];
 
-        $transType->update(Arr::only($data, ['name']));
+        $transType->update(Arr::only($data, ['name', 'color_id', 'icon_id']));
 
         return [
             "error" => false,
@@ -115,6 +116,14 @@ class GoalTransactionTypeService
                 "code" => 404,
                 "message" => "Este tipo de movimiento de meta no existe",
             ];
+
+        if ($transType->transactions()->exists()) {
+            return [
+                "error" => true,
+                "code" => 409,
+                "message" => "No se puede eliminar el tipo porque tiene movimientos relacionados",
+            ];
+        }
 
         $transType->delete();
 

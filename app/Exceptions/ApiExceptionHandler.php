@@ -2,12 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Helpers\ResponseFormatter;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class ApiExceptionHandler
@@ -15,46 +17,38 @@ class ApiExceptionHandler
     public static function handle(Throwable $e)
     {
         if ($e instanceof AuthenticationException || $e instanceof UnauthorizedHttpException) {
-            return response()->json([
-                'status'  => 401,
-                'message' => 'No autenticado',
-            ], 401);
+            return ResponseFormatter::error('No autenticado', 401);
         }
 
         if ($e instanceof AuthorizationException) {
-            return response()->json([
-                'status'  => 403,
-                'message' => 'No autorizado',
-            ], 403);
+            return ResponseFormatter::error('No autorizado', 403);
         }
 
         if ($e instanceof ModelNotFoundException || $e instanceof NotFoundHttpException) {
-            return response()->json([
-                'status'  => 404,
-                'message' => 'Recurso no encontrado',
-            ], 404);
+            return ResponseFormatter::error('Recurso no encontrado', 404);
         }
 
         if ($e instanceof ValidationException) {
-            return response()->json([
-                'status'  => 422,
-                'message' => 'Datos inválidos',
-                'errors'  => $e->errors(),
-            ], 422);
+            $flattenedErrors = collect($e->errors())
+                ->flatten()
+                ->values()
+                ->all();
+
+            return ResponseFormatter::error('Datos inválidos', 422, $flattenedErrors);
         }
 
         if ($e instanceof HttpException) {
-            return response()->json([
-                'status'  => $e->getStatusCode(),
-                'message' => $e->getMessage() ?: 'Error HTTP',
-            ], $e->getStatusCode());
+            return ResponseFormatter::error(
+                $e->getMessage() ?: 'Error HTTP',
+                $e->getStatusCode()
+            );
         }
 
-        // Mensaje para errores desconocidos
-        return response()->json([
-            'status'  => 500,
-            'message' => 'Error interno del servidor',
-            'error'   => config('app.debug') ? $e->getMessage() : null,
-        ], 500);
+        // Error desconocido
+        return ResponseFormatter::error(
+            'Error interno del servidor',
+            500,
+            config('app.debug') ? [$e->getMessage()] : []
+        );
     }
 }

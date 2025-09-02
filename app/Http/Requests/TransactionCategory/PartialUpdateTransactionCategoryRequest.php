@@ -6,24 +6,17 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class PartialUpdateTransactionCategoryRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'name' => 'sometimes|string|min:5|max:20',
             'transaction_type_id' => 'sometimes|exists:transaction_types,id',
+            'icon_id' => 'sometimes|numeric|exists:icons,id',
         ];
     }
 
@@ -34,19 +27,17 @@ class PartialUpdateTransactionCategoryRequest extends FormRequest
             'name.min' => 'El :attribute debe tener al menos :min caracteres.',
             'name.max' => 'El :attribute no debe tener más de :max caracteres.',
             'transaction_type_id.exists' => 'El :attribute seleccionado no existe.',
+            'icon_id.numeric' => 'El :attribute debe ser un número.',
+            'icon_id.exists' => 'El :attribute seleccionado no existe.',
         ];
     }
 
-    /**
-     * Get custom attributes for validator errors.
-     *
-     * @return array<string, string>
-     */
     public function attributes(): array
     {
         return [
             'name' => 'nombre',
             'transaction_type_id' => 'tipo de movimiento',
+            'icon_id' => 'icono',
         ];
     }
 }

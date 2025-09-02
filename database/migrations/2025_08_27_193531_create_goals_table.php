@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->decimal('target_amount', 14,2);
-            $table->string('description');
-            $table->date('due_date');
+            $table->string('description')->nullable();
+            $table->date('due_date')->nullable();
             $table->boolean('completed')->default(false);
             $table->unsignedBigInteger('status_id')->default(1);
             $table->foreign('status_id')->references('id')->on('goal_statuses');
